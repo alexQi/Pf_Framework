@@ -49,6 +49,8 @@ class Perfect {
 		$this->classFileDirs = array_merge($tempClassFileDirs,$this->config['autoLoadDirs']);
 
 		spl_autoload_register("self::loadClass");
+
+		/******** 使用自定义错误 ********/
 		if (ENVIRONMENT=='debug') {
         			set_error_handler(array(&$this, 'error_handler'));
         			register_shutdown_function(array(&$this, 'handleFatalError'));

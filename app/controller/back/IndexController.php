@@ -24,12 +24,12 @@ class IndexController extends Controller {
 		$page = new Page($params);
 		$data['page'] = $page->showPage();
 		$data['list'] = $result['list'];
+		$a/1;
 		$this->display('index',$data);
 	}
 
 	public function testAction(){
 		try {
-			
 		} catch (Exception $e) {
 			echo $e->getMessage();
 		}

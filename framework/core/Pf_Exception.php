@@ -2,6 +2,8 @@
 if (!defined('Perfect')) exit('Blocking access to this script');
 /**
  * 异常处理类 继承系统Exception
+ * 重写__toString() 格式化错误信息
+ * 定义错误输出模板
  */
 class Pf_Exception extends Exception{
 
@@ -44,7 +46,7 @@ class Pf_Exception extends Exception{
 		return $errorMessage;
 	}
 
-	public function showException($viewName='error'){
+	private function showException($viewName='error'){
 		$data['tittle'] = $this->tittle;
 		$data['url']   = isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER'] : $this->baseUrl;
 		$data['time'] = $this->time;
