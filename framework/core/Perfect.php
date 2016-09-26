@@ -96,14 +96,20 @@ class Perfect {
 	public function error_handler($error_level,$error_message,$file,$line){
 		switch($error_level){
 			case E_NOTICE:
+				$error_type = 'Notice';
+				break;
 			case E_USER_NOTICE:
 				$error_type = 'Notice';
 				break;
 			case E_WARNING:
+				$error_type='Warning';
+				break;
 			case E_USER_WARNING:
 				$error_type='Warning';
 				break;
 			case E_ERROR:
+				$error_type='Fatal Error';
+				break;
 			case E_USER_ERROR:
 				$error_type='Fatal Error';
 				break;
