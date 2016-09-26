@@ -16,7 +16,7 @@ class IndexController extends Controller {
 		$result = $IndexModel->queryAll($onPage,$pageSize,$filter);
 
 		$params = array(
-		            'total_rows'=>$result['count'], 
+		            'total_rows'=>$result['count'],
 		            'goto' =>$this->Url,
 		            'now_page'  =>$onPage,
 		            'list_rows' =>$pageSize,

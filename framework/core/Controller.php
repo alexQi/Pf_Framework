@@ -55,17 +55,6 @@ abstract class Controller {
 	}
 
 	/**
-	 * 公共模板显示 404  ERROR页面等
-	 */
-	public function displayMain($viewName='404',$data=array(),$layout='main'){
-		extract($data);
-		$publicDir = $this->viewDir.'public/';
-		$viewFile = $publicDir.$viewName.'.'.$this->viewExt;
-		$fileName = $publicDir.$layout.'.'.$this->viewExt;
-		require_once $fileName;
-	}
-
-	/**
 	 * 跳转方法
 	 */
 	protected function jump($url, $info = '', $time = 3) {

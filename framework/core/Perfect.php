@@ -34,16 +34,16 @@ class Perfect {
 		$this->action      =   $Router->uri_param['action'];
 
 		$this->baseSrc = 'http://'.$_SERVER['HTTP_HOST'].substr($_SERVER['PHP_SELF'],0,strrpos($_SERVER['PHP_SELF'],'/')+1);
-		$this->baseUrl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
+		$this->baseUrl  = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
 
 		$this->Pf_Exception = new Pf_Exception;
-		$this->Pf_Exception->layout = $this->config['viewConfig']['layout'];
+		$this->Pf_Exception->layout   = $this->config['viewConfig']['layout'];
 		$this->Pf_Exception->viewDir = $this->config['viewConfig']['viewPath'];
 		$this->Pf_Exception->viewExt = $this->config['viewConfig']['viewExt'];
-		$this->Pf_Exception->email = $this->config['systemConfig']['email'];
+		$this->Pf_Exception->email    = $this->config['systemConfig']['email'];
 
 		$this->Pf_Exception->baseSrc = $this->baseSrc;
-		$this->Pf_Exception->baseUrl = $this->baseUrl;
+		$this->Pf_Exception->baseUrl  = $this->baseUrl;
 
 		$tempClassFileDirs = self::getClassFileDirs();
 		$this->classFileDirs = array_merge($tempClassFileDirs,$this->config['autoLoadDirs']);
@@ -177,6 +177,5 @@ class Perfect {
 			$this->Pf_Exception->init($e);
 		}
 	}
-
-
+	
 }

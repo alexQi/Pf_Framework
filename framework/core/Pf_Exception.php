@@ -7,7 +7,7 @@ class Pf_Exception extends Exception{
 
 	public $tittle = '404 Page';
 	public $url = "";
-	public $time = 3;
+	public $time = 10;
 	public $layout;
 	public $viewDir;
 	public $viewExt;
@@ -16,8 +16,14 @@ class Pf_Exception extends Exception{
 	public function __construct($message='', $code = 0, Exception $previous = null)
 	{
         		parent::__construct($message, $code, $previous);
-        		
     	}
+
+    	public function init($error){
+		$this->message = $error;
+		if ($this->message!='') {
+			$this->showException();
+		}
+	}
 
 	public function __toString() {
 		$line = $this->line-1;
@@ -36,13 +42,6 @@ class Pf_Exception extends Exception{
 		}
 		$errorMessage .= "</pre>";
 		return $errorMessage;
-	}
-
-	public function init($error){
-		$this->message = $error;
-		if ($this->message!='') {
-			$this->showException();
-		}
 	}
 
 	public function showException($viewName='error'){
