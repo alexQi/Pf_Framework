@@ -21,7 +21,7 @@
 				<td><?php echo $row['time']; ?></td>
 				<td><?php echo $row['date']; ?></td>
 			</tr>
-			<?php endforeach ?>
+			<?php endforeach; ?>
 		</tbody>
 	</table>
 	<?php echo $page; ?>
