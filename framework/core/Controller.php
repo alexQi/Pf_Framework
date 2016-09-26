@@ -32,7 +32,7 @@ abstract class Controller {
 	 * @param layout 公共布局文件 string
 	 *
 	 */
-	public function display($viewName,$data=array(),$layout=''){
+	protected function display($viewName,$data=array(),$layout=''){
 		extract($data);
 		try {
 			if (!$viewName) {
