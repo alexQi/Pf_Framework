@@ -55,8 +55,8 @@ class Mysql {
 			$result = $this->DB->exec($sql);
 		}catch (PDOException $e){
 			$this->errorMessage = '<strong>SQL执行失败<strong>';
-			$this->errorMessage .= '<strong>错误的信息是 : <strong>'.$e->getMessage();
-			$this->errorMessage .= '<strong>错误的语句是 : <strong>'.$sql;
+			$this->errorMessage .= '<br /><strong>错误的信息是 : <strong>'.$e->getMessage();
+			$this->errorMessage .= '<br /><strong>错误的语句是 : <strong>'.$sql;
 			exit();
 		}
 		return $result;

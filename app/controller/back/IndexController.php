@@ -12,6 +12,7 @@ class IndexController extends Controller {
 		$onPage = isset($_REQUEST['onPage']) ? intval($_REQUEST['onPage']) : 1;
 		$pageSize = 10;
 		$IndexModel = new IndexModel;
+		
 		$filter = ' 1=1 ';
 		$result = $IndexModel->queryAll($onPage,$pageSize,$filter);
 
@@ -21,9 +22,11 @@ class IndexController extends Controller {
 		            'now_page'  =>$onPage,
 		            'list_rows' =>$pageSize,
 		);
+
 		$page = new Page($params);
 		$data['page'] = $page->showPage();
 		$data['list'] = $result['list'];
+		
 		$this->display('index',$data);
 	}
 

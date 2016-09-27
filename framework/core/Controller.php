@@ -60,7 +60,7 @@ abstract class Controller {
 	/**
 	 * 跳转方法
 	 */
-	protected function jump($url, $info = '', $time = 3) {
+	protected function Jump($url, $info = '', $time = 3) {
 
 		if ($info == '') {
 			header('Location: ' . $url);
@@ -85,13 +85,13 @@ abstract class Controller {
 		exit($jsCode);
 	}
 
-	public function go($goto){
+	public function Go($goto){
 		$jsCode  = "<script language='javascript'>";
 		$jsCode .= "window.location='{$goto}';</script>";
 		exit($jsCode);
 	}
 
-	public function substring($title,$length){
+	public function SubString($title,$length){
 		if(strlen($title)>=$length){
 			for ($i=0; $i< $length; $i++) {
 				$ch = substr($title, $i, 1);
@@ -110,6 +110,10 @@ abstract class Controller {
 		$jsCode .= is_null($msg)?'alert("系统重新加载!");':"alert(\"$msg\");";
 		$jsCode .= 'window.parent.location.reload();</script>';
 		exit($jsCode);
+	}
+
+	protected function Log($data){
+		
 	}
 
 	

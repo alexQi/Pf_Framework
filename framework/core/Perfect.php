@@ -17,6 +17,9 @@ class Perfect {
 	public $PerfectException;
 
 	public function __construct(){
+		
+		error_reporting(0);
+		ini_set("display_errors", "Off");
 		//载入文件
 		include(CORE_PATH.'Router.php');
 		include(CORE_PATH.'Pf_Exception.php');
