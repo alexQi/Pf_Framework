@@ -7,7 +7,6 @@ abstract class Controller {
 
 	protected $Perfect;
 	protected $layout;
-	protected $viewDir;
 	protected $viewExt;
 	protected $baseUrl;
 	protected $baseSrc;
@@ -16,12 +15,17 @@ abstract class Controller {
 	public function __construct(){
 		global $Perfect;
 		$this->Perfect = $Perfect;
+		$this->viewPath = $this->Perfect->viewPath;
 		$this->layout = $this->Perfect->config['viewConfig']['layout'];
-		$this->viewDir = $this->Perfect->config['viewConfig']['viewPath'];
 		$this->viewExt = $this->Perfect->config['viewConfig']['viewExt'];
 		$this->baseSrc = $this->Perfect->baseSrc;
 		$this->baseUrl = $this->Perfect->baseUrl;
-		$this->Url = $this->baseUrl.'?r='.$this->Perfect->module.'/'.$this->Perfect->controller.'/'.$this->Perfect->action;
+		if ($this->Perfect->Router['moduleStatus']) {
+			$uri = $this->Perfect->Router['module'].'/'.$this->Perfect->Router['controller'].'/'.$this->Perfect->Router['action'];
+		}else{
+			$uri = $this->Perfect->Router['controller'].'/'.$this->Perfect->Router['action'];
+		}
+		$this->Url = $this->baseUrl.'?r='.$uri;
 	}
 
 	/**
@@ -38,12 +42,11 @@ abstract class Controller {
 			if (!$viewName) {
 				throw new Pf_Exception("viewName is not defined");
 			}
-			$viewPath = $this->viewDir.$this->Perfect->module.DS;
-			$viewFile = $viewPath.$this->Perfect->controller.DS.$viewName.'.'.$this->viewExt;
+			$viewFile = $this->viewPath.$this->Perfect->Router['controller'].DS.$viewName.'.'.$this->viewExt;
 			if (!file_exists($viewFile)) {
 				throw new Pf_Exception("view file not found , view file name : <font color='#FE8D41'>$viewFile</font>");
 			}
-			$fileName = $viewPath.'layout/'.$this->layout.'.'.$this->viewExt;
+			$fileName = $this->viewPath.'layout/'.$this->layout.'.'.$this->viewExt;
 			if (!file_exists($viewFile)) {
 				throw new Pf_Exception("layout file not found , layout name : <font color='#FE8D41'>$fileName</font>");
 			}

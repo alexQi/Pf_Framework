@@ -1,4 +1,5 @@
 <?php
+if (!defined('Perfect')) exit('Blocking access to this script');
 /**
  * FileCache
  *

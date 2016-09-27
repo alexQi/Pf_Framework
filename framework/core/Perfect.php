@@ -9,7 +9,6 @@ include('Main.config.php');
 
 class Perfect {
 
-	public $module;
 	public $controller;
 	public $action;
 	public $config;
@@ -29,9 +28,13 @@ class Perfect {
 			$this->db = Mysql::getInstance($this->config['database']);
 		}
 		$Router = new Router($this->config['router']);
-		$this->module    =   $Router->uri_param['module'];
-		$this->controller =   $Router->uri_param['controller'];
-		$this->action      =   $Router->uri_param['action'];
+		$this->Router = $Router->uri_param;
+
+		if ($this->Router['moduleStatus']) {
+			$this->viewPath = $this->config['viewConfig']['viewPath'].$this->Router['module'].DS;
+		}else{
+			$this->viewPath = $this->config['viewConfig']['viewPath'];
+		}
 
 		$this->baseSrc = 'http://'.$_SERVER['HTTP_HOST'].substr($_SERVER['PHP_SELF'],0,strrpos($_SERVER['PHP_SELF'],'/')+1);
 		$this->baseUrl  = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'];
@@ -75,11 +78,20 @@ class Perfect {
 				}
 			}
 			if ($systemClassFile===false) {
-				if ('Model' == substr($className, -5)) {
+				if ('Model' == substr($className, -5)) 
+				{
 					$classFile = MODEL_PATH . $className . '.php';
-				}elseif ('Controller' == substr($className, -10)) {
-					$classFile = CONTROLLER_PATH.$this->module.DS.$className . '.php';
-				}else{
+				}
+				elseif ('Controller' == substr($className, -10)) 
+				{
+					if ($this->Router['moduleStatus']) {
+						$classFile = CONTROLLER_PATH.$this->Router['module'].DS.$className . '.php';
+					}else{
+						$classFile = CONTROLLER_PATH.$className . '.php';
+					}
+				}
+				else
+				{
 					throw new Pf_Exception("unknown class : <font color='#FE8D41'>$className</font>");
 				}
 			}
@@ -164,14 +176,17 @@ class Perfect {
 
 	public function run(){
 		try{
-			$moduleName = CONTROLLER_PATH.$this->module.DS;
-			$controllerName = $this->controller.'Controller';
-			$actionName = $this->action.'Action';
-
-			if (!is_dir($moduleName)) {
-				throw new Pf_Exception("Not found module , module name : <font color='#FE8D41'>$this->module</font>");
+			if ($this->Router['moduleStatus']) {
+				$moduleName = CONTROLLER_PATH.$this->Router['module'].DS;
+				if (!is_dir($moduleName)) {
+					throw new Pf_Exception("Not found module , module name : <font color='#FE8D41'>$this->module</font>");
+				}
 			}
-			if (!$this->controller || !class_exists($controllerName)) {
+			
+			$controllerName = $this->Router['controller'].'Controller';
+			$actionName = $this->Router['action'].'Action';
+
+			if (!$this->Router['controller'] || !class_exists($controllerName)) {
 				throw new Pf_Exception("Not found controller , controller name : <font color='#FE8D41'>$controllerName</font>");
 			}
 			$Controller = new $controllerName;

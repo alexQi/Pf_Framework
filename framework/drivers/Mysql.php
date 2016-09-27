@@ -1,5 +1,5 @@
 <?php
-
+if (!defined('Perfect')) exit('Blocking access to this script');
 /**
  * 操作MYSQL的工具类
  * 基于 mysql_pdo扩展

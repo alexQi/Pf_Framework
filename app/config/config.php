@@ -11,6 +11,7 @@ $CONFIG['database'] = array(
 );
 
 $CONFIG['router'] = array(
+	'enable_module'=>true,
 	'default_module'=>'back',
 	'default_controller'=>'Index',
 	'default_action'=>'Index',

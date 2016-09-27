@@ -1,4 +1,5 @@
 <?php
+if (!defined('Perfect')) exit('Blocking access to this script');
 /** 
  * file: fileupload.class.php 文件上传类FileUpload
  * 本类的实例对象用于处理上传文件，可以上传一个文件，也可同时处理多个文件上传

@@ -1,4 +1,5 @@
 <?php
+if (!defined('Perfect')) exit('Blocking access to this script');
 /**
  * 分页类
  * @author  xiaojiong & 290747680@qq.com

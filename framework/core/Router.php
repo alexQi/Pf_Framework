@@ -14,26 +14,44 @@ class Router{
 	}
 
 	public function getParams(){
-		$module = '';
+		
 		$controller = '';
 		$action = '';
+		$module = '';
+		
+		
 		if (isset($_REQUEST['r']) && trim($_REQUEST['r'])!='') 
 		{
 			$param = trim($_REQUEST['r']);
 			$tempParam = explode('/', $param);
 			
-			if (count($tempParam)!=0) {
-				array_filter($tempParam);
-				$module = isset($tempParam[0])?$tempParam[0]:'';
-				$controller = isset($tempParam[1])?$tempParam[1]:'';
-				$action = isset($tempParam[2])?$tempParam[2]:'';
+			if ($this->default_config['enable_module']) {
+				if (count($tempParam)!=0) 
+				{
+					array_filter($tempParam);
+					$module = isset($tempParam[0])?$tempParam[0]:'';
+					$controller = isset($tempParam[1])?$tempParam[1]:'';
+					$action = isset($tempParam[2])?$tempParam[2]:'';
+				}else{
+					$module = $param;
+				}
+				$moduleStatus = true;
 			}else{
-				$module = $param;
+				if (count($tempParam)!=0) 
+				{
+					array_filter($tempParam);
+					$controller = isset($tempParam[0])?$tempParam[0]:'';
+					$action = isset($tempParam[1])?$tempParam[1]:'';
+				}else{
+					$controller = $param;
+				}
+				$moduleStatus = false;
 			}
 		}
 		$uri_param['module'] = $module!='' && isset($module) ? $module : $this->default_config['default_module'];
 		$uri_param['controller'] = $controller!='' && isset($controller) ? $controller : $this->default_config['default_controller'];
 		$uri_param['action'] = $action!='' && isset($action) ? $action : $this->default_config['default_action'];
+		$uri_param['moduleStatus'] = $moduleStatus;
 
 		return $this->uri_param = $uri_param;
 	}

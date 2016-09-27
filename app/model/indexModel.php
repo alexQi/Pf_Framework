@@ -1,4 +1,6 @@
 <?php
+if (!defined('Perfect')) exit('Blocking access to this script');
+
 class IndexModel extends Model {
 
 	public function queryAll($onPage=1,$pageSize=20,$filter) {
