@@ -77,6 +77,41 @@ abstract class Controller {
 		}
 	}
 
+	public function JsCode($code=null){
+		if(is_null($code)) exit('参数错误!');
+		$jsCode  = '<script language="javascript">';
+		$jsCode .= $code;
+		$jsCode .= "</script>";
+		exit($jsCode);
+	}
+
+	public function go($goto){
+		$jsCode  = "<script language='javascript'>";
+		$jsCode .= "window.location='{$goto}';</script>";
+		exit($jsCode);
+	}
+
+	public function substring($title,$length){
+		if(strlen($title)>=$length){
+			for ($i=0; $i< $length; $i++) {
+				$ch = substr($title, $i, 1);
+				if(ord($ch)>0x80) $i++;
+			}
+			$str = substr($title, 0, $i);
+			$str .="..";
+		}else{
+			$str = $title;
+		}
+		return $str;
+	}
+
+	public function Reload($msg=null){
+		$jsCode  = '<script language="javascript">';
+		$jsCode .= is_null($msg)?'alert("系统重新加载!");':"alert(\"$msg\");";
+		$jsCode .= 'window.parent.location.reload();</script>';
+		exit($jsCode);
+	}
+
 	
 
 }
