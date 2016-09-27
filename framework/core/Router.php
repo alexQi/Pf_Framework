@@ -18,7 +18,11 @@ class Router{
 		$controller = '';
 		$action = '';
 		$module = '';
-		
+		if ($this->default_config['enable_module']) {
+			$moduleStatus = true;
+		}else{
+			$moduleStatus = false;
+		}
 		
 		if (isset($_REQUEST['r']) && trim($_REQUEST['r'])!='') 
 		{
