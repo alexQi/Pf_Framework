@@ -40,6 +40,18 @@ class Mysql {
 		return $this->DB = $DB;
 	}
 
+	public function beginTransaction(){
+		$this->DB->beginTransaction();
+	}
+
+	public function commit(){
+		$this->DB->commit();
+	}
+
+	public function rollback(){
+		$this->DB->rollback();
+	}
+
 	private static function fetchType(){
 		return array(
 			'ass' => PDO::FETCH_ASSOC,

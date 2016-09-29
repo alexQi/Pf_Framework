@@ -14,6 +14,7 @@ define('WEB_PATH', ROOT_PATH . 'web' . DS);//web路径
 define('CONTROLLER_PATH', APP_PATH . 'controller' . DS);//控制器路径
 define('MODEL_PATH', APP_PATH . 'model' . DS);//模型路径
 define('VIEW_PATH', APP_PATH . 'view' . DS);//视图路径
+define('LOG_PATH', APP_PATH . 'log' . DS);//日志路径
 define('PUBLIC_VIEW_PATH', VIEW_PATH . 'public' . DS);//公共视图路径
 define('CONFIG_PATH', APP_PATH . 'config' . DS);//配置路径
 

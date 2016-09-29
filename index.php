@@ -1,5 +1,6 @@
 <?php
-define('Perfect',true);
+define('Perfect','ZED');
+header("Content-type: text/html; charset=utf-8");
 $system_path = 'framework';
 
 error_reporting(0);

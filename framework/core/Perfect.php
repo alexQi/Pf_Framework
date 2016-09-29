@@ -20,13 +20,17 @@ class Perfect {
 		
 		error_reporting(0);
 		ini_set("display_errors", "Off");
+
+		session_start();
 		//载入文件
 		include(CORE_PATH.'Router.php');
 		include(CORE_PATH.'Pf_Exception.php');
 		include(DRIVER_PATH.'Mysql.php');
 		include(CONFIG_PATH.'config.php');
+		include(CONFIG_PATH.'menu.php');
 
 		$this->config = $CONFIG;
+		$this->menu  = $system_menu;
 		if(!empty($this->config['database'])) {
 			$this->db = Mysql::getInstance($this->config['database']);
 		}

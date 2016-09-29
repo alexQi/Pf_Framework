@@ -20,6 +20,7 @@ abstract class Controller {
 		$this->viewExt = $this->Perfect->config['viewConfig']['viewExt'];
 		$this->baseSrc = $this->Perfect->baseSrc;
 		$this->baseUrl = $this->Perfect->baseUrl;
+		$this->IP = new IpStore;
 		if ($this->Perfect->Router['moduleStatus']) {
 			$uri = $this->Perfect->Router['module'].'/'.$this->Perfect->Router['controller'].'/'.$this->Perfect->Router['action'];
 		}else{
@@ -57,24 +58,39 @@ abstract class Controller {
 		require_once $fileName;
 	}
 
-	/**
-	 * 跳转方法
-	 */
-	protected function Jump($url, $info = '', $time = 3) {
+	function LogRecord($msg) {
+		$userAccount = $_SESSION[Perfect]['userAccount'];
+		$userName = $_SESSION[Perfect]['userName'];
+		$logDir = LOG_PATH.$userAccount.DS;
 
-		if ($info == '') {
-			header('Location: ' . $url);
-		} else {
-			if (file_exists(PUBLIC_VIEW_PATH . 'jump.html')) {
-				require PUBLIC_VIEW_PATH . 'jump.html';
-			} else {
-				//不存在，建立一个默认的模板
-				$html = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" >';
-				$html .= "<meta http-equiv='Refresh' content='$time; URL=$url' >";
-				$html .= "</head><body>$info</body></html>";
-				echo $html;
-			}
+		if(!is_dir($logDir)){
+			mkdir($logDir,0777,true);
+			chmod($logDir,0777);
 		}
+		$logFile = $logDir.date('Y-m').'.log';
+
+		if(file_exists($logFile)) chmod($logFile,0777);
+		
+		$nowTime = date('Y-m-d H:i:s');
+		$ip = $_SERVER["REMOTE_ADDR"]?$_SERVER["REMOTE_ADDR"]:$GLOBALS["HTTP_SERVER_VARS"]["REMOTE_ADDR"];
+		$this->IP->qqwry($ip);
+		$address = str_replace('CZ88.NET','',(iconv("utf-8","GBK//IGNORE",$this->IP->Country).iconv("utf-8","GBK//IGNORE",$this->IP->Local)));
+
+		$logLine = "$userName|$ip|$address|$nowTime|$msg\n";
+		file_put_contents($logFile,$logLine, FILE_APPEND|LOCK_EX);
+	}
+
+	/**
+	 * 系统跳转方法
+	 *
+	 */
+	protected function redirect($url,$param=array()) {
+		$uri = "";
+		foreach ($param as $key => $value) {
+			$uri .= '&'.$key.'='.$value;
+		}
+		$url = $url.$uri;
+		header('Location: ' . $url);
 	}
 
 	public function JsCode($code=null){
@@ -85,6 +101,9 @@ abstract class Controller {
 		exit($jsCode);
 	}
 
+	/**
+	 * 任意跳转方法
+	 */
 	public function Go($goto){
 		$jsCode  = "<script language='javascript'>";
 		$jsCode .= "window.location='{$goto}';</script>";
