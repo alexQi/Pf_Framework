@@ -27,6 +27,8 @@ abstract class Controller {
 			$uri = $this->Perfect->Router['controller'].'/'.$this->Perfect->Router['action'];
 		}
 		$this->Url = $this->baseUrl.'?r='.$uri;
+
+		
 	}
 
 	/**
@@ -38,6 +40,11 @@ abstract class Controller {
 	 *
 	 */
 	protected function display($viewName,$data=array(),$layout=''){
+		if ($layout!='') {
+			$thisLayout = $layout;
+		}else{
+			$thisLayout = $this->layout;
+		}
 		extract($data);
 		try {
 			if (!$viewName) {
@@ -47,7 +54,7 @@ abstract class Controller {
 			if (!file_exists($viewFile)) {
 				throw new Pf_Exception("view file not found , view file name : <font color='#FE8D41'>$viewFile</font>");
 			}
-			$fileName = $this->viewPath.'layout/'.$this->layout.'.'.$this->viewExt;
+			$fileName = $this->viewPath.'layout/'.$thisLayout.'.'.$this->viewExt;
 			if (!file_exists($viewFile)) {
 				throw new Pf_Exception("layout file not found , layout name : <font color='#FE8D41'>$fileName</font>");
 			}
@@ -78,6 +85,21 @@ abstract class Controller {
 
 		$logLine = "$userName|$ip|$address|$nowTime|$msg\n";
 		file_put_contents($logFile,$logLine, FILE_APPEND|LOCK_EX);
+	}
+
+	public function Alert($msg=null, $goto = null){
+		$msg = str_replace('|','<br>',$msg);
+		$jsCode = '<html xmlns="http://www.w3.org/1999/xhtml"><head>';
+		$jsCode .= '<link rel="stylesheet" href="'.$this->baseSrc.'web/css/default.css\">';
+		$jsCode .= '<link rel="stylesheet" href="'.$this->baseSrc.'web/js/themes/pepper-grinder/easyui.css">';
+		$jsCode .= '<script src="'.$this->baseSrc.'web/js/themes/icon.css\"></script>';
+		$jsCode .= '<script src="'.$this->baseSrc.'web/js/jquery-1.4.2.min.js\"></script>';
+		$jsCode .= '<script src="'.$this->baseSrc.'web/js/jquery.easyui.js\"></script>';
+		$jsCode .= '<script language="javascript">';
+		$jsCode .= is_null($goto)?"$.messager.alert('提示','$msg','warning',function(){window.history.back();});":"$.messager.alert('提示','$msg','warning',function(){ window.location='{$goto}'; });";
+		$jsCode .= "</script></head><body>";
+		$jsCode .= "</body></html>";
+		exit($jsCode);
 	}
 
 	/**

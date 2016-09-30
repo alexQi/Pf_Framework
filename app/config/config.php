@@ -68,3 +68,9 @@ $CONFIG['province'] = array(
 	'35' => '中国',
 	'36' => '美国',
 );
+
+$CONFIG['systemInfo'] = array(
+	'system_name'=>'ZCG',
+	'author'=>'Alex.Qiu',
+	'email'=>'alex.qiubo@qq.com',
+);

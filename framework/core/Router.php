@@ -59,6 +59,25 @@ class Router{
 
 		return $this->uri_param = $uri_param;
 	}
+
+	public static function getFatherRouterInfo(){
+		$action = "";
+		if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER']!='') {
+			$uri = explode('r=', $_SERVER['HTTP_REFERER']);
+			if ($uri) {
+				$params = explode('&', $uri[1]);
+				if ($params)
+				{
+					$routers = explode('/',$params[0]);
+				}else{
+					$routers = explode('/',$params);
+				}
+				array_filter($routers);
+				$action = isset($routers[2])?$routers[2]:'';
+			}
+		}
+		return $action;
+	}
 }
 
 

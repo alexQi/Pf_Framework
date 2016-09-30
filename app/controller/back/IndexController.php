@@ -55,7 +55,7 @@ class IndexController extends Controller {
 				$_SESSION[Perfect]['systemActive'] = true;
 				$_SESSION[Perfect]['userName'] = $userInfo['true_name'];
 				$_SESSION[Perfect]['userAccount'] = $userInfo['user_account'];
-				$_SESSION[Perfect]['manageToucn'] = $userInfo['user_touch'];
+				$_SESSION[Perfect]['manageTouch'] = $userInfo['user_touch'];
 				$_SESSION[Perfect]['groupRole'] = $userInfo['group_role'];
 				$_SESSION[Perfect]['userRole'] = $userInfo['user_role'];
 				$_SESSION[Perfect]['roleType'] = $userInfo['role_type'];
@@ -66,10 +66,6 @@ class IndexController extends Controller {
 					$_SESSION[Perfect]['root'] = true;
 				}else{
 					$_SESSION[Perfect]['root'] = false;
-				}
-				if ($ip=="::1") {
-					$ip = '127.0.0.1';
-					$address = '本机地址';
 				}
 
 				$this->IP->qqwry($ip);
@@ -92,32 +88,16 @@ class IndexController extends Controller {
 			}
 		}
 
-		$this->display('index',$data);
+		$this->display('index',$data,'main_login');
 	}
 
 	/**
 	 * demo
 	 */
-	public function demoAction() {
-		$onPage = isset($_REQUEST['onPage']) ? intval($_REQUEST['onPage']) : 1;
-		$pageSize = 10;
-		$IndexModel = new IndexModel;
-		
-		$filter = ' 1=1 ';
-		$result = $IndexModel->queryAll($onPage,$pageSize,$filter);
-
-		$params = array(
-					'total_rows'=>$result['count'],
-					'goto' =>$this->Url,
-					'now_page'  =>$onPage,
-					'list_rows' =>$pageSize,
-		);
-
-		$page = new Page($params);
-		$data['page'] = $page->showPage();
-		$data['list'] = $result['list'];
-		
-		$this->display('index',$data);
+	public function logoutAction() {
+		unset($_SESSION[Perfect]);
+		session_destroy();
+		$this->redirect('index.php?r=back/index/index');
 	}
 
 }
