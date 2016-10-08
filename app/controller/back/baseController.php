@@ -16,18 +16,18 @@ class baseController extends Controller {
 			foreach($this->Menu['ITEM'] as $value){
 				if($value['M']==$controllerName && $value['A']==$actionName && (substr($actionName,-4)!='Deal')){
 					if(isset($_REQUEST['onPage']) && (intval($_REQUEST['onPage'])==0 || empty($_REQUEST['onPage']))){
-						$pageIntro = "点击进入";
+						$pageInto = "点击进入";
 					}else{
-						$pageIntro = "分页进入";
+						$pageInto = "分页进入";
 					}
-					$searchIntro = '';
+					$searchInto = '';
 					if(!empty($_REQUEST['searchTag'])){
-						$searchIntro = "，搜索关键词:".trim($_REQUEST['searchTag']);
+						$searchInto = "，搜索关键词:".trim($_REQUEST['searchTag']);
 					}
 					if(!empty($_REQUEST['searchTagById'])){
-						$searchIntro = "，搜索ID:".trim($_REQUEST['searchTagById']);
+						$searchInto = "，搜索ID:".trim($_REQUEST['searchTagById']);
 					}
-					$activeMessage = $pageIntro.$this->Menu['MENU'][$value['F']].'->'.$value['T'].$searchIntro;
+					$activeMessage = $pageInto.$this->Menu['MENU'][$value['F']].'->'.$value['T'].$searchInto;
 					$this->LogRecord($activeMessage);
 				}else{
 					continue;
@@ -74,7 +74,6 @@ class baseController extends Controller {
 				}
 				$fatherAction = Router::getFatherRouterInfo();
 
-				// var_dump($this);
 				$sysItemValue = array_flip($sysItemIndex);
 				if (array_key_exists($actionName, $sysItemValue)) {
 					$activeIndex = $sysItemValue[$actionName];

@@ -90,11 +90,10 @@ abstract class Controller {
 	public function Alert($msg=null, $goto = null){
 		$msg = str_replace('|','<br>',$msg);
 		$jsCode = '<html xmlns="http://www.w3.org/1999/xhtml"><head>';
-		$jsCode .= '<link rel="stylesheet" href="'.$this->baseSrc.'web/css/default.css\">';
 		$jsCode .= '<link rel="stylesheet" href="'.$this->baseSrc.'web/js/themes/pepper-grinder/easyui.css">';
-		$jsCode .= '<script src="'.$this->baseSrc.'web/js/themes/icon.css\"></script>';
-		$jsCode .= '<script src="'.$this->baseSrc.'web/js/jquery-1.4.2.min.js\"></script>';
-		$jsCode .= '<script src="'.$this->baseSrc.'web/js/jquery.easyui.js\"></script>';
+		$jsCode .= '<script src="'.$this->baseSrc.'web/js/themes/icon.css"></script>';
+		$jsCode .= '<script src="'.$this->baseSrc.'web/js/jquery-1.4.2.min.js"></script>';
+		$jsCode .= '<script src="'.$this->baseSrc.'web/js/jquery.easyui.js"></script>';
 		$jsCode .= '<script language="javascript">';
 		$jsCode .= is_null($goto)?"$.messager.alert('提示','$msg','warning',function(){window.history.back();});":"$.messager.alert('提示','$msg','warning',function(){ window.location='{$goto}'; });";
 		$jsCode .= "</script></head><body>";
