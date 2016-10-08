@@ -45,6 +45,7 @@ class IndexController extends Controller {
 						foreach($existProvinceTmp as $value){
 							if(!preg_match('/'.$value.'/', $address)) $tags++;
 						}
+						
 						if($tags==count($existProvinceTmp)){
 							$this->Alert($managerInfo['true_name'].'的帐号禁止在'.$address.'登录！');
 							exit;
@@ -61,7 +62,7 @@ class IndexController extends Controller {
 				$_SESSION[Perfect]['roleType'] = $userInfo['role_type'];
 				$_SESSION[Perfect]['userId'] = $userInfo['admin_id'];
 				$_SESSION[Perfect]['activeTime'] = time();
-				
+
 				if($userInfo['user_role']==-1){
 					$_SESSION[Perfect]['root'] = true;
 				}else{
@@ -75,10 +76,11 @@ class IndexController extends Controller {
 				$loginInfo['admin_id'] = $userInfo['admin_id'];
 				$loginInfo['ip'] = $ip;
 				$loginInfo['address'] = $address;
-				$loginInfo['time'] = date('Y-m-d H:i:s');
-				$loginInfo['date'] = date('Y-m-d');
+				$loginInfo['time'] = date('Y-m-d H:i:s',time());
+				$loginInfo['date'] = date('Y-m-d',time());
 				
 				$adminModel->setLoginRecord($loginInfo);
+				
 				$this->LogRecord("登录管理后台。");
 
 				$this->redirect('index.php?r=back/main/index');

@@ -13,9 +13,12 @@ class baseController extends Controller {
 
 		if(isset($_SESSION[Perfect])) $_SESSION[Perfect]['activeTime'] = time();
 		if(!is_null(Perfect) && isset($_SESSION[Perfect]) && $_SESSION[Perfect]['systemActive']==true) {
-			foreach($this->Menu['ITEM'] as $value){
+
+			#--VIEW LOG--#
+			foreach($this->Menu['ITEM'] as $value)
+			{
 				if($value['M']==$controllerName && $value['A']==$actionName && (substr($actionName,-4)!='Deal')){
-					if(isset($_REQUEST['onPage']) && (intval($_REQUEST['onPage'])==0 || empty($_REQUEST['onPage']))){
+					if(isset($_REQUEST['onPage']) && (intval($_REQUEST['onPage'])==0 || empty($_REQUEST['onPage'])) ){
 						$pageInto = "点击进入";
 					}else{
 						$pageInto = "分页进入";
@@ -33,22 +36,25 @@ class baseController extends Controller {
 					continue;
 				}
 			}
+
+			//获取用户权限
 			$touchSql = "SELECT user_touch FROM `pf_admins` WHERE admin_id='{$_SESSION[Perfect]['userId']}' ";
 			$activeUserTouch = $this->Perfect->db->fetch($touchSql);
 
-			if(empty($activeUserTouch['user_touch'])){
+			if(empty($activeUserTouch['user_touch']))
+			{
 				$userTouch = $_SESSION[Perfect]['manageTouch'];
 			}else{
 				$userTouch = $activeUserTouch['user_touch'];
 			}
-			if($_SESSION[Perfect]['systemActive']===true && $_SESSION[Perfect]['root']===false) 
+
+			if($_SESSION[Perfect]['systemActive']===true && $_SESSION[Perfect]['root']===false)
 			{
-				$operationMark = true;
-				$NoAuth = true;
+				$operationMark = false;
+				$NoAuth = false;
 				if(substr($actionName,-4)=='Deal') $operationMark = true;
 				if(substr($actionName,-6)=='NoAuth') $NoAuth = true;
 
-				if(is_null($userTouch)) exit("Sorry,your account doesn't have permission.\\n\\nFor Inquiries: Please contact technical!");
 				$userTouchArr = explode('|',$userTouch);
 
 				$viewPermis = array();
@@ -56,37 +62,47 @@ class baseController extends Controller {
 					$tmps = explode('-',$value);
 					$dTypeCount = count(explode(',',$tmps[1]));
 					$viewPermis[] = $tmps[0];
-					if($dTypeCount>=1)
-					{
+					if($dTypeCount>=1){
 						$operatePermis[$tmps[0]] = explode(',',$tmps[1]);
 					}
 				}
 
-				foreach($this->Menu['ITEM'] as $key => $value){
+				foreach($this->Menu['ITEM'] as $key => $value)
+				{
 					$sysItemIndex[$key]=$value['A'];
-					if(isset($value['DTYPE']) && !is_null($value['DTYPE'])){
-						foreach($this->Menu['DTYPE'][$value['DTYPE']] as $k => $v){
-							$dTypeItemIndex[$key][$k]= $v['D'];
+					if(isset($value['DTYPE']) && !is_null($value['DTYPE']))
+					{
+						foreach($this->Menu['DTYPE'][$value['DTYPE']] as $k => $v)
+						{
+							$dTypeItemIndex[$key][$k] = $v['D'];
 						}
-					}else{
+					}
+					else
+					{
 						$dTypeItemIndex[$key] = 0;
 					}
 				}
+
 				$fatherAction = Router::getFatherRouterInfo();
 
 				$sysItemValue = array_flip($sysItemIndex);
-				if (array_key_exists($actionName, $sysItemValue)) {
+				
+				if (array_key_exists($actionName, $sysItemValue))
+				{
 					$activeIndex = $sysItemValue[$actionName];
 				}else{
-					$this->Alert("{$_SESSION[Perfect]['userAccount']}：无权限!");
+					$this->Alert("Sorry ".ucfirst($_SESSION[Perfect]['userAccount'])."，当前操作无权限!");
 				}
-				
+
 				$activeFatherIndex = $fatherAction='' ? $sysItemValue[$fatherAction]:'';
+
+				var_dump($actionName);
+				var_dump($sysItemValue);
+				var_dump($viewPermis);
 
 				if(!in_array($activeIndex,$viewPermis) && $NoAuth!=true){
 					if($operationMark!==true){
-						$this->Alert("{$_SESSION[Perfect]['userAccount']}：无权限!");
-						exit();
+						$this->Alert("Sorry ".ucfirst($_SESSION[Perfect]['userAccount'])."，当前操作无权限!");
 					}
 				}
 				

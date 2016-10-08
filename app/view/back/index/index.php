@@ -4,7 +4,7 @@
 			<div class="login-brand text-center">
 				<i class="fa fa-database m-right-xs"></i><?php echo $this->Perfect->config['systemInfo']['system_name']; ?><strong class="text-skin">Login</strong>
 			</div>
-			<form id="login-form" method="post">
+			<form id="login-form" action="<?php echo $this->baseUrl; ?>?r=back/index/index" method="post">
 				<div class="form-group m-bottom-md">
 					<label for="LoginForm_username" class="required">USERNAME</label>
 					<input class="form-control" name="username" id="LoginForm_username" type="text">					

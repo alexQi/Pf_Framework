@@ -22,6 +22,7 @@ class Perfect {
 		ini_set("display_errors", "Off");
 
 		session_start();
+		
 		//载入文件
 		include(CORE_PATH.'Router.php');
 		include(CORE_PATH.'Pf_Exception.php');

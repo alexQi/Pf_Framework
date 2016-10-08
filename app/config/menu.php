@@ -7,7 +7,7 @@ if (!defined('Perfect')) exit('Blocking access to this script');
  * +++++++++++++++++++++
  */
 $system_menu['MENU'] = array(
-	'1'=>'用户中心',
+	'01'=>'用户中心',
 	'100'=>'系统管理',
 );
 
@@ -18,10 +18,8 @@ $system_menu['MENU'] = array(
  * ******************************
  */
 $system_menu['ITEM'] = array(
-	'11'=>array('F'=>'1','T'=>'用户中心','M'=>'main','A'=>'index'),
-	'12'=>array('F'=>'1','T'=>'欢迎登录','M'=>'main','A'=>'test1'),
-	'13'=>array('F'=>'1','T'=>'帐号设置','M'=>'main','A'=>'acountManage'),
-	'14'=>array('F'=>'1','T'=>'系统日志','M'=>'main','A'=>'logManage'),
+	'11'=>array('F'=>'01','T'=>'用户中心','M'=>'main','A'=>'index'),
+	'12'=>array('F'=>'01','T'=>'欢迎登录','M'=>'main','A'=>'test'),
 
 	'101'=>array('F'=>'100','T'=>'用户列表','M'=>'system','A'=>'systemMemberManage','DTYPE'=>1010),
 	'102'=>array('F'=>'100','T'=>'操作日志','M'=>'system','A'=>'operationLogList'),

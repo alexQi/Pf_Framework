@@ -149,7 +149,7 @@ $(function() {
 </noscript>
 <div region="north" split="true" border="false" style="overflow: hidden; height: 50px; #7f99be repeat-x center 50%;line-height: 20px;font-family: Verdana, 微软雅黑,黑体">
 	<span style="float:right; padding-right:20px;margin-top:10px;" class="head">
-		<a href="#" id="editpass" style="margin-right:10px;">欢迎登陆</a>
+		<a href="#" id="editpass" style="margin-right:10px;">欢迎登陆系统，<font color="red"><?php echo $_SESSION[Perfect]['userName']; ?></font></a>
 		<a href="#" id="loginOut">安全退出</a>
 	</span>
 	<span style="padding-left:10px; font-size: 16px; ">
@@ -167,7 +167,7 @@ $(function() {
 <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden">
 	<div id="tabs" class="easyui-tabs" fit="true" border="false">
 		<div title="欢迎使用" style="padding:20px;overflow:hidden;" id="home">
-			<h1 id="messa">Welcome to jQuery UI!</h1>
+			<h1 id="messa">Welcome To My world</h1>
 		</div>
 	</div>
 </div>
