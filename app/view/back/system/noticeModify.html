@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title></title>
+{%include file="../public_meta.html"%}
+<script type="text/javascript" src="{%$smarty.const.APPLICATION_FOLDER%}/static/editor/kindeditor.js"></script>
+<script type="text/javascript" src="{%$smarty.const.APPLICATION_FOLDER%}/static/editor/themes/default/default.css"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+	$('#saveButton').click(function() {
+		var file = $("#material_img_url").val();
+		if(file) {
+			$("#is_upload").val('2');
+		}
+
+		$.messager.confirm('提示','您确定要修改广告素材吗？',function(r){
+			if (r){
+				$('#projectCreateForm').submit();
+			}else{
+				return false;
+			}
+		});
+	});
+});
+
+var editor;
+KindEditor.ready(function(K) {
+	editor = K.create('#content', {
+		resizeType : 1,
+		allowPreviewEmoticons : false,
+		allowImageUpload : false,
+		items : [
+			'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+			'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+			'insertunorderedlist', '|', 'emoticons', 'image', 'link'],
+		afterCreate : function() {
+      			this.sync();
+    		}
+	});
+	K('#saveButton').click(function(e) {
+		$('#content').val(editor.html());
+	});
+});
+//-->
+</script>
+</head>
+<body>
+<div id="mainTB">
+	<div class="pageTitle">公告管理--修改公告</div>
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mainTable">
+	<form method="post" action="index.php?controller=system&action=systemDeal" id="projectCreateForm" enctype = 'multipart/form-data'>
+	<input type="hidden" name="dType" id="dType" value="noticeModify">
+	<input type="hidden" name="aType" id="aType" value="noticeModify">
+	<input type="hidden" name="notice[id]" id="id" value="{%$noticeInfo.id%}">
+	<tr>
+		<th style="width:100px;text-align:right;height:35px;line-height:35px"><span class="tableHeadTitle">广告名称：</span></th>
+		<th style="text-align:left;text-indent:5px">
+			<input type="text" name="notice[title]" id="title" value="{%$noticeInfo.title%}" style="width:300px;height:25px;line-height:25px">
+		</th>
+	</tr>
+	<tr>
+		<td style="width:100px;text-align:right;height:35px;line-height:35px"><span class="tableHeadTitle">公告内容：</span></td>
+		<td style="text-align:left;text-indent:5px">
+			<span>
+				<textarea name="notice[content]" id="content" cols="100" rows="8" style="resize: none;margin:10px auto 10px 5px;width:800px;height:300px;visibility:hidden;padding:10px">{%$noticeInfo.content%}</textarea>
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:100px;text-align:right;height:35px;line-height:35px"><span class="tableHeadTitle">发布时间：</span></td>
+		<td style="text-align:left;text-indent:5px">
+			<span>
+				<input type="text" name="start_time" id="start" class="easyui-datebox" style="width:140px;height:25px;line-height:25px">
+			<input type="hidden" name='notice[time]' id='start_time' value="{%$noticeInfo.time%}" />
+			</span>
+		</td>
+	</tr>
+	<tr>
+		<td style="width:100px;border-right:none;height:50px"></td>
+		<td style="text-align:left;text-indent:5px">
+			<a id="saveButton" class="easyui-linkbutton" icon="icon-save" href="javascript:void(0);">提交</a>
+		</td>
+	</tr>
+	</form>
+	</table>
+</div>
+<script>
+$(document).ready(function(){
+	var default_start_time = $("#start_time").val();
+　　	$('#start').datebox('setValue', default_start_time);
+});
+$('#start').datebox({
+	editable:false,
+	required:false,
+	currentText:'今天',
+	closeText:'关闭',
+	formatter:function(date){
+		var y = date.getFullYear();
+		var m = date.getMonth()+1;
+		var d = date.getDate();
+		return y + "-" + (m < 10 ? ("0" + m) : m) + "-" + (d < 10 ? ("0" + d) : d);
+	},
+	onSelect: function(){
+		var date = $("#start").datebox("getValue");
+		$("#start_time").val(date);
+	}
+});
+</script>
+</body>
+</html>

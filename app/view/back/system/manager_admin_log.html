@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title></title>
+{%include file="../public_meta.html"%}
+<script type="text/javascript">
+<!--
+function quickSick () {
+    var dealField = new Array('sickDate','sortType');
+    var waitHrefTemp = new Array();
+    for(var i=0;i<dealField.length;i++){
+        var itemValue = document.getElementById(dealField[i]).value.trim();
+        if(itemValue=='') continue;
+        var temp = dealField[i]+'='+itemValue;
+        waitHrefTemp.push(temp);
+    }
+    waitHref = waitHrefTemp.join('&');
+    document.location.href='index.php?controller=system&action=systemDeal&dType=systemSickManageLog&userAccount={%$userAccount%}&'+waitHref;
+}
+
+//-->
+</script>
+</head>
+<body>
+<div id="mainTB">
+    <div class="pageTitle">管理日志</div>
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" class="mainTable">
+    <tr>
+        <td colspan="4" style="padding-left:5px;border-right:none;height:30px">
+            <span>请选择记录周期：</span>
+            <span>
+                <select id="sickDate" name="sickDate" onchange="quickSick()">
+                    <option value="0">请选择</option>
+                    {%section name=id loop=$logDateBox%}
+                    <option value="{%$logDateBox[id].date%}" {%$logDateBox[id].tag%}>{%$logDateBox[id].date%}</option>
+				    {%/section%}
+                </select>
+            </span>
+            <span style="margin-left:20px">当前帐号：{%$userAccount%}</span>
+        </td>
+        <td style="padding-right:5px;border-right:none;height:30px;text-align:right">
+            <span>请选择查看方式：</span>
+            <span>
+                <select id="sortType" name="sortType" onchange="quickSick()">
+                    <option value="0">快速查看</option>
+                    {%section name=id loop=$sortSelect%}
+                    <option value="{%$sortSelect[id].value%}" {%$sortSelect[id].tag%}>{%$sortSelect[id].title%}</option>
+				    {%/section%}
+                </select>
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <th><span class="tableHeadTitle">操作人</span></th>
+        <th><span class="tableHeadTitle">登录IP</span></th>
+        <th><span class="tableHeadTitle">地理位置</span></th>
+        <th><span class="tableHeadTitle">操作时间</span></th>
+        <th><span class="tableHeadTitle">操作内容</span></th>
+    </tr>
+    {%section name=id loop=$masterLog%}
+    <tr>
+        <td class="firstRow" style="text-align:center">{%$masterLog[id].action_name%}</td>
+        <td class="firstRow" style="text-align:center">{%$masterLog[id].action_ip%}</td>
+        <td class="firstRow" style="text-align:center">{%$masterLog[id].action_area%}</td>
+        <td class="firstRow" style="text-align:center">{%$masterLog[id].action_time%}</td>
+        <td class="firstRow" style="text-align:left;padding-left:10px;padding-right:10px;line-height:22px;width:520px"">{%$masterLog[id].action_detail%}</td>
+    </tr>
+    {%/section%}
+    </table>
+    {%$pageList%}
+</div>
+</body>
+</html>
