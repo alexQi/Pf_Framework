@@ -64,7 +64,7 @@ class mainController extends baseController {
 				$temp = '{"menuid":"'.$key.'","icon":"'.$menuIcoBox[$key].'","menuname":"'.$father.'","menus":[';
 				foreach($tmpMenus[$key] as $v){
 					if(strtolower($v['M'])=='index' && strtolower($v['A'])=='index') continue;
-					$detailTmp[] = '{"menuname":"'.$v['T'].'","icon":"'.$menuIcoBox[$key].'","url":"'.'index.php?controller='.$v['M'].'&action='.$v['A'].'"}';
+					$detailTmp[] = '{"menuname":"'.$v['T'].'","icon":"'.$menuIcoBox[$key].'","url":"'.'index.php?r=back/'.$v['M'].'/'.$v['A'].'"}';
 				}
 				$temp .= join(',',$detailTmp);
 				$temp .= "]}";
