@@ -64,7 +64,7 @@ class Router{
 		$action = "";
 		if (isset($_SERVER['HTTP_REFERER']) && $_SERVER['HTTP_REFERER']!='') {
 			$uri = explode('r=', $_SERVER['HTTP_REFERER']);
-			if ($uri) {
+			if ($uri && isset($uri[1])) {
 				$params = explode('&', $uri[1]);
 				if ($params)
 				{

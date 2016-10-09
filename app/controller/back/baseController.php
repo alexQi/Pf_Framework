@@ -95,11 +95,6 @@ class baseController extends Controller {
 				}
 
 				$activeFatherIndex = $fatherAction='' ? $sysItemValue[$fatherAction]:'';
-
-				var_dump($actionName);
-				var_dump($sysItemValue);
-				var_dump($viewPermis);
-
 				if(!in_array($activeIndex,$viewPermis) && $NoAuth!=true){
 					if($operationMark!==true){
 						$this->Alert("Sorry ".ucfirst($_SESSION[Perfect]['userAccount'])."，当前操作无权限!");
@@ -110,7 +105,7 @@ class baseController extends Controller {
 					$dType = isset($_REQUEST['dType']) ? trim($_REQUEST['dType']) : '';
 					$dTypeTmp = $activeFatherIndex!='' ? array_flip($dTypeItemIndex[$activeFatherIndex]) : array();
 					$dTypeIndex = $dType!='' ? $dTypeTmp[$dType] : '';
-					if(@array_key_exists($activeFatherIndex,$operatePermis) && !in_array($dTypeIndex,$operatePermis[$activeFatherIndex])){
+					if(array_key_exists($activeFatherIndex,$operatePermis) && !in_array($dTypeIndex,$operatePermis[$activeFatherIndex])){
 						foreach($this->Menu['ITEM'] as $value){
 							if($value['M']==$controllerName && $value['A']==$actionName && (substr($actionName,-4)!='Deal'))
 							{
@@ -120,7 +115,7 @@ class baseController extends Controller {
 								continue;
 							}
 						}
-						$this->Alert("{$_SESSION[Perfect]['userAccount']}：无权限!");
+						$this->Alert("Sorry ".ucfirst($_SESSION[Perfect]['userAccount'])."，当前操作无权限!");
 						exit();
 					}
 				}

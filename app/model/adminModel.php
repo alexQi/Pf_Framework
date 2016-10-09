@@ -36,6 +36,23 @@ class adminModel extends Model {
 		}
 	}
 
+	function getManageMemberList($onPage=1,$pageSize=20,$filter) {
+		$offSet = $pageSize*($onPage-1);
+		$sql = "SELECT *
+				FROM {$this->TB['TB_admins']}
+				WHERE user_role>=0 $filter 
+				LIMIT $offSet,$pageSize
+				";
+		$sqls = "SELECT count(*) as count
+				 FROM {$this->TB['TB_admins']}
+				 WHERE user_role>=0 $filter";
+		// var_dump($sql);
+		$countLine = $this->DB->getOne($sqls);
+		$allLine = $this->DB->getAll($sql);
+		unset($onPage,$pageSize,$filter,$offSet,$sql,$sqls);
+		return array('list'=>$allLine,'count'=>$countLine['count']);
+	}
+
 
 }
 
