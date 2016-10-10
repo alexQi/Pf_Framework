@@ -51,7 +51,7 @@ class Perfect {
 		$this->Pf_Exception->layout   = $this->config['viewConfig']['layout'];
 		$this->Pf_Exception->viewDir = $this->config['viewConfig']['viewPath'];
 		$this->Pf_Exception->viewExt = $this->config['viewConfig']['viewExt'];
-		$this->Pf_Exception->email    = $this->config['systemConfig']['email'];
+		$this->Pf_Exception->email    = $this->config['systemInfo']['email'];
 
 		$this->Pf_Exception->baseSrc = $this->baseSrc;
 		$this->Pf_Exception->baseUrl  = $this->baseUrl;

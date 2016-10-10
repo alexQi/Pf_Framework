@@ -18,7 +18,7 @@ function InitLeftMenu() {
 		menulist += '<div title="'+n.menuname+'"  icon="'+n.icon+'" style="overflow:auto;">';
 		menulist += '<ul>';
 		$.each(n.menus, function(j, o) {
-			menulist += '<li><div><a target="mainFrame" href="' + o.url + '" ><span class="icon '+o.icon+'" ></span>' + o.menuname + '</a></div></li> ';
+			menulist += '<li><div><a target="mainFrame" href="' + o.url + '" ><span class="icon '+o.icon+'" >&nbsp;</span>' + o.menuname + '</a></div></li> ';
 		})
 		menulist += '</ul></div>';
 	})
@@ -170,6 +170,7 @@ function clockon() {
 	var timer = setTimeout("clockon()", 200);
 }
 $(function() {
+	clockon();
 	$('#loginOut').click(function() {
 		$.messager.confirm('系统提示', '您确定要退出本次登录吗?', function(r) {
 
@@ -184,13 +185,14 @@ $(function() {
 		content:createFrame('index.php?controller=index&action=welcome')
 	}).tabs({
 		onSelect: function (title) {
-			var currTab = $('#tabs').tabs('getTab', title);
-			var iframe = $(currTab.panel('options').content);
+			// var currTab = $('#tabs').tabs('getTab', title);
+			// alert(currTab);
+			// var iframe = $(currTab.panel('options').content);
 
-			var src = iframe.attr('src');
-			if(src){
-				$('#tabs').tabs('update', { tab: currTab, options: { content: createFrame(src)} });
-			}
+			// var src = iframe.attr('src');
+			// if(src){
+			// 	$('#tabs').tabs('update', { tab: currTab, options: { content: createFrame(src)} });
+			// }
 		}
 	});
 });
@@ -204,7 +206,8 @@ $(function() {
 </noscript>
 <div region="north" split="true" border="false" style="overflow: hidden; height: 50px; #7f99be repeat-x center 50%;line-height: 20px;font-family: Verdana, 微软雅黑,黑体">
 	<span style="float:right; padding-right:20px;margin-top:10px;" class="head">
-		<a href="#" id="editpass" style="margin-right:10px;">欢迎登陆系统，<font color="red"><?php echo $_SESSION[Perfect]['userName']; ?></font></a>
+		<span style="margin-right:10px;" id="bgclock"></span>
+		<span style="margin-right:10px;">欢迎登陆系统，<font color="red"><?php echo $_SESSION[Perfect]['userName']; ?></font></span>
 		<a href="#" id="loginOut">安全退出</a>
 	</span>
 	<span style="padding-left:10px; font-size: 16px; ">

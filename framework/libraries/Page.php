@@ -140,7 +140,7 @@ class Page
 	{
 		if($this->total_rows < 1)
 		{
-			return '';
+			return '<span>无记录</span>';
 		}
 		$plus = $this->plus;
 		if( $plus + $this->now_page > $this->total_pages)
@@ -150,8 +150,8 @@ class Page
 			$begin = $this->now_page - $plus;
 		}       
 		$begin = ($begin >= 1) ? $begin : 1;
-		$return = '<form class="form-inline">总计 <font class="text-info">' .$this->total_rows. '</font> 个记录分为 <font class="text-info">' .$this->total_pages. '</font> 页, 当前第 <font class="text-info">' . $this->now_page . '</font> 页 ';
-		$return .= ',每页 <font class="text-info"> '.$this->list_rows.' </font>条记录，';
+		$return = '<span>总计 <font>' .$this->total_rows. '</font> 个记录分为 <font>' .$this->total_pages. '</font> 页, 当前第 <font>' . $this->now_page . '</font> 页 ';
+		$return .= ',每页 <font> '.$this->list_rows.' </font>条记录，';
 		$return .= $this->first_page()."\n";
 		$return .= $this->up_page()."\n"; 
 		$return .= $this->down_page()."\n";
@@ -172,7 +172,7 @@ class Page
 				$return .= '<option value="' .$i. '">' .$i. '</option>';
 			}           
 		}
-		 $return .= '</select> 页</form>';
+		 $return .= '</select> 页<span>';
 		return $return;
 	}
 }

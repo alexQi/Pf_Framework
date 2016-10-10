@@ -27,9 +27,26 @@ $CONFIG['viewConfig'] = array(
 	'layout'=>'main',
 );
 
-$CONFIG['systemConfig'] = array(
-	'email'=>'alex.qiubo@qq.com',
+$CONFIG['systemGroup'] = array (
+	'1' => '技术部',
+	'2' => '市场部',
+	'3' => '财务部',
+	'4' => '人事部',
 );
+
+$CONFIG['systemUserRole'] = array (
+	'0' => '总经理',
+	'1' => '经理',
+	'2' => '主管',
+	'3' => '职员',
+);
+
+$CONFIG['systemAccountStatus'] = array (
+	'0' => '正常',
+	'1' => '锁定'
+);
+
+
 $CONFIG['province'] = array(
 	'1'  => '北京',
 	'2'  => '天津',

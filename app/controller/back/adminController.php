@@ -1,41 +1,48 @@
 <?php
 if (!defined('Perfect')) exit('Blocking access to this script');
-
 /**
- * 系统用户控制器
+ * 后台用户控制器类
  */
-class SystemController extends baseController
+class adminController extends baseController
 {
-	function systemMemberManageAction() {
-		$systemModel = new SystemModel();
-		$searchTag = trim($_REQUEST['searchTag']);
-		$onPage = max(intval($_REQUEST['onPage']),1);
+	public function indexAction() {
+		$adminModel = new adminModel();
+		$searchTag = isset($_REQUEST['searchTag']) ? trim($_REQUEST['searchTag']) : '';
+		$onPage = isset($_REQUEST['onPage']) ? max(intval($_REQUEST['onPage']),1) : 1;
 		$pageSize = 30;
 		$filter = '';
 		if(!empty($searchTag)) {
 			$filter .= " AND user_account LIKE ('%$searchTag%')";
 		}
 		$filter .= " ORDER BY is_closed,admin_id ASC";
-		$accountList = $systemModel->getManageMemberList($onPage,$pageSize,$filter);
+		$accountList = $adminModel->getMemberList($onPage,$pageSize,$filter);
 		foreach($accountList['list'] as $key => $value){
 			$accountList['list'][$key]['user_role'] = $value['user_role'];
 			$accountList['list'][$key]['role_type'] = $value['role_type'];
-			$accountList['list'][$key]['user_role_tag'] = $this->CONFIG['systemGroup'][$value['user_role']];
-			$accountList['list'][$key]['role_type_tag'] = $this->CONFIG['systemUserRole'][$value['role_type']];
-			$accountList['list'][$key]['is_closed_tag'] = $this->CONFIG['systemAccountStatus'][$value['is_closed']];
+			$accountList['list'][$key]['user_role_tag'] = $this->Perfect->config['systemGroup'][$value['user_role']];
+			$accountList['list'][$key]['role_type_tag'] = $this->Perfect->config['systemUserRole'][$value['role_type']];
+			$accountList['list'][$key]['is_closed_tag'] = $this->Perfect->config['systemAccountStatus'][$value['is_closed']];
 		}
-		$goToUrl = "index.php?controller=system&action=systemMemberManage&searchTag=$searchTag";
-		$this->Views->assign('searchTag',$searchTag);
-		$this->Views->assign('activeRole',$_SESSION[FEELINGS]['userRole']);
-		$this->Views->assign('activeManager',$_SESSION[FEELINGS]['userId']);
-		$this->Views->assign('activeRoleType',$_SESSION[FEELINGS]['roleType']);
-		$this->Views->assign('accountList',$accountList['list']);
-		$this->Views->assign('pageList',$this->pagelist($accountList['count'],$pageSize,$goToUrl));
-		$this->Views->display('manager_list.html');
+		$params = array(
+		            'total_rows'=>$accountList['count'],
+		            'goto' =>$this->Url,
+		            'now_page'  =>$onPage,
+		            'list_rows' =>$pageSize,
+		);
+		$page = new Page($params);
+
+		$data['searchTag'] = $searchTag;
+		$data['userRole'] = $_SESSION[Perfect]['userRole'];
+		$data['userId'] = $_SESSION[Perfect]['userId'];
+		$data['roleType'] = $_SESSION[Perfect]['roleType'];
+		$data['list'] = $accountList['list'];
+		$data['page'] = $page->showPage();
+
+		$this->display('index',$data);
 	}
 
 	function systemDealAction(){
-		$systemModel = new SystemModel();
+		$adminModel = new adminModel();
 		$dType = trim($_REQUEST['dType']);
 		if($dType=='systemCreateManager'){
 			$this->systemCreateManager(microtime());
@@ -46,18 +53,18 @@ class SystemController extends baseController
 		}elseif($dType=='systemLockManager'){
 			$intoData['admin_id'] = intval($_REQUEST['accountId']);
 			$intoData['is_closed'] = 1;
-			if($systemModel->setManagerField($intoData)){
-				$this->Alert('²Ù×÷³É¹¦!');
+			if($adminModel->setManagerField($intoData)){
+				$this->Alert('操作成功!');
 			}else{
-				$this->Alert('²Ù×÷Ê§°Ü!');
+				$this->Alert('操作失败!');
 			}
 		}elseif($dType=='systemUnLockManager'){
 			$intoData['admin_id'] = intval($_REQUEST['accountId']);
 			$intoData['is_closed'] = 0;
-			if($systemModel->setManagerField($intoData)){
-				$this->Alert('²Ù×÷³É¹¦!');
+			if($adminModel->setManagerField($intoData)){
+				$this->Alert('操作成功!');
 			}else{
-				$this->Alert('²Ù×÷Ê§°Ü!');
+				$this->Alert('操作失败!');
 			}
 		}elseif($dType=='systemSickManageLog'){
 
@@ -74,21 +81,21 @@ class SystemController extends baseController
 		}elseif($dType=='deleteNotice'){
 
 			$id = intval($_REQUEST['id']);
-			if($systemModel->deleteNotice($id)){
-				$this->Alert('É¾³ý³É¹¦!');
+			if($adminModel->deleteNotice($id)){
+				$this->Alert('删除成功!');
 			}else{
-				$this->Alert('É¾³ýÊ§°Ü!');
+				$this->Alert('删除失败!');
 			}
 		}else{
-			exit('·Ç·¨²Ù×÷£¡');
+			exit('非法操作！');
 		}
 	}
 
 	function systemCreateManager($token){
-		if(empty($token)) exit('·Ç·¨²Ù×÷£¡');
+		if(empty($token)) exit('非法操作！');
 		$aType = trim($_REQUEST['aType']);
 		if($aType=='createSystemManager'){
-			$systemModel = new SystemModel();
+			$adminModel = new adminModel();
 			$intoData['user_account'] = trim($_POST['userName']);
 			$intoData['password'] = MD5($_POST['passWord']);
 			$intoData['true_name'] = trim($_POST['trueName']);
@@ -109,7 +116,7 @@ class SystemController extends baseController
 			$viewPermissions = (array)$_POST['viewPermissions'];
 			$operatingAuthority = (array)$_POST['operatingAuthority'];
 			if(empty($viewPermissions)){
-				$this->Alert('±ØÐëÉèÖÃÈ¨ÏÞ!');
+				$this->Alert('必须设置权限!');
 				exit;
 			}
 
@@ -141,16 +148,16 @@ class SystemController extends baseController
 				if(in_array($_SESSION[FEELINGS]['userRole'],array('0','3')) && in_array($_SESSION[FEELINGS]['roleType'],array('0','1'))) {
 					$intoData['user_touch'] = $userTouch;
 				}else{
-					$this->Alert('·Ç·¨²Ù×÷!');
+					$this->Alert('非法操作!');
 					exit;
 				}
 			}else{
 				$intoData['user_touch'] = $userTouch;
 			}
-			if($systemModel->createManagerMamber($intoData)){
-				$this->Alert('ÕÊºÅ´´½¨³É¹¦!');
+			if($adminModel->createManagerMamber($intoData)){
+				$this->Alert('帐号创建成功!');
 			}else{
-				$this->Alert('ÕÊºÅ´´½¨Ê§°Ü!');
+				$this->Alert('帐号创建失败!');
 			}
 			exit;
 		}
@@ -195,10 +202,10 @@ class SystemController extends baseController
 	}
 
 	function systemManagerModify($token){
-		if(empty($token)) exit('·Ç·¨²Ù×÷£¡');
+		if(empty($token)) exit('非法操作！');
 		$aType = trim($_REQUEST['aType']);
 		if($aType=='systemModifyManager'){
-			$systemModel = new SystemModel();
+			$adminModel = new adminModel();
 			$intoData['admin_id'] = intval($_POST['accountId']);
 			if(!empty($_POST['passWord'])){
 				$intoData['password'] = MD5($_POST['passWord']);
@@ -221,7 +228,7 @@ class SystemController extends baseController
 			$viewPermissions = (array)$_POST['viewPermissions'];
 			$operatingAuthority = (array)$_POST['operatingAuthority'];
 			if(empty($viewPermissions)){
-				$this->Alert('±ØÐëÉèÖÃÈ¨ÏÞ!');
+				$this->Alert('必须设置权限!');
 				exit;
 			}
 
@@ -252,27 +259,27 @@ class SystemController extends baseController
 			if($_SESSION[FEELINGS]['userRole']!=-1){
 				if(in_array($_SESSION[FEELINGS]['userRole'],array('0','3')) && in_array($_SESSION[FEELINGS]['roleType'],array('0','1'))) {
 					if($intoData['user_role']==0 || $intoData['role_type']==0){
-						$this->Alert('·Ç·¨²Ù×÷!');
+						$this->Alert('非法操作!');
 						exit;
 					}
 					$intoData['user_touch'] = $userTouch;
 				}else{
-					$this->Alert('·Ç·¨²Ù×÷!');
+					$this->Alert('非法操作!');
 					exit;
 				}
 			}else{
 				$intoData['user_touch'] = $userTouch;
 			}
-			if($systemModel->setManagerField($intoData)){
-				$this->Alert('ÐÞ¸Ä³É¹¦!');
+			if($adminModel->setManagerField($intoData)){
+				$this->Alert('修改成功!');
 			}else{
-				$this->Alert('ÐÞ¸ÄÊ§°Ü!');
+				$this->Alert('修改失败!');
 			}
 			exit;
 		}
 		$masterId = intval($_REQUEST['accountId']);
-		$systemModel = new SystemModel();
-		$accountInfo = $systemModel->getManagerDetailById($masterId);
+		$adminModel = new adminModel();
+		$accountInfo = $adminModel->getManagerDetailById($masterId);
 		$userGroup = $areaLimits = $exportMenu = $allowArea = $roleTypeSelect = array();
 		foreach($this->CONFIG['systemGroup'] as $key => $value){
 			$selected = ($key==$accountInfo['user_role'])?'selected="selected"':'';
@@ -317,8 +324,8 @@ class SystemController extends baseController
 	}
 
 	function systemAccountManageLogSick($token){
-		if(empty($token)) exit('·Ç·¨²Ù×÷£¡');
-		$masterModel = new SystemModel();
+		if(empty($token)) exit('非法操作！');
+		$masterModel = new adminModel();
 		$onPage = max(intval($_REQUEST['onPage']),1);
 		$pageSize = 18;
 		$sortType = intval($_REQUEST['sortType']);
@@ -326,7 +333,7 @@ class SystemController extends baseController
 		$userName = trim($_REQUEST['userAccount']);
 		if(!$_SESSION[FEELINGS]['systemDaddy']){
 			if($userName!=$_SESSION[FEELINGS]['userAccount']){
-				exit('·Ç·¨²Ù×÷£¡');
+				exit('非法操作！');
 			}
 		}
 		$logDir = LOG_FOLDER.DS.$userName.DS;
@@ -336,7 +343,7 @@ class SystemController extends baseController
 			$selected = ($sickDate==$date)?"selected":'';
 			$logDateBox[] = array('date'=>$date,'tag'=>$selected);
 		}
-		$sortBox = array('1'=>'°´²Ù×÷Ê±¼äÓÉÔ¶¼°½ü','2'=>'°´²Ù×÷Ê±¼äÓÉ½ü¼°Ô¶');
+		$sortBox = array('1'=>'按操作时间由远及近','2'=>'按操作时间由近及远');
 		$sortSelect = array();
 		foreach($sortBox as $key => $value){
 			$selected = ($key==$sortType)?'selected="selected"':'';
@@ -355,7 +362,7 @@ class SystemController extends baseController
 	}
 
 	function systemManagerLoginManageAction(){
-		$masterModel = new SystemModel();
+		$masterModel = new adminModel();
 		$searchTag = trim($_REQUEST['searchTag']);
 		$searchIp = trim($_REQUEST['searchIp']);
 		$onPage = max(intval($_REQUEST['onPage']),1);
@@ -382,7 +389,7 @@ class SystemController extends baseController
 
 		$recordList = $masterModel->getMamagerSystemLoginLog($onPage,$pageSize,$filter);
 		foreach($recordList['list'] as $key => $value){
-			$recordList['list'][$key]['user_role_tag'] = ($value['user_role']==-1)?'³õÊ¼ÕÊºÅ':$this->CONFIG['systemGroup'][$value['user_role']];
+			$recordList['list'][$key]['user_role_tag'] = ($value['user_role']==-1)?'初始帐号':$this->CONFIG['systemGroup'][$value['user_role']];
 		}
 
 		$goToUrl = "index.php?controller=system&action=systemManagerLoginManage&searchTag=$searchTag&searchIp=$searchIp&startDate=$startDate&overDate=$overDate";
@@ -396,7 +403,7 @@ class SystemController extends baseController
 	}
 
 	function siteMemberSystemLogManageAction(){
-		$masterModel = new SystemModel();
+		$masterModel = new adminModel();
 		$searchTag = trim($_REQUEST['searchTag']);
 		$searchIp = trim($_REQUEST['searchIp']);
 		$onPage = max(intval($_REQUEST['onPage']),1);
@@ -430,7 +437,7 @@ class SystemController extends baseController
 	}
 
 	function advertiserMemberSystemLogManageAction(){
-		$masterModel = new SystemModel();
+		$masterModel = new adminModel();
 		$searchTag = trim($_REQUEST['searchTag']);
 		$searchIp = trim($_REQUEST['searchIp']);
 		$onPage = max(intval($_REQUEST['onPage']),1);
@@ -465,7 +472,7 @@ class SystemController extends baseController
 	}
 
 	function systemManagerManageLogAction(){
-		$masterModel = new SystemModel();
+		$masterModel = new adminModel();
 		$onPage = max(intval($_REQUEST['onPage']),1);
 		$pageSize = 18;
 		$sortType = intval($_REQUEST['sortType']);
@@ -478,7 +485,7 @@ class SystemController extends baseController
 			$selected = ($sickDate==$date)?"selected":'';
 			$logDateBox[] = array('date'=>$date,'tag'=>$selected);
 		}
-		$sortBox = array('1'=>'°´²Ù×÷Ê±¼äÓÉÔ¶¼°½ü','2'=>'°´²Ù×÷Ê±¼äÓÉ½ü¼°Ô¶');
+		$sortBox = array('1'=>'按操作时间由远及近','2'=>'按操作时间由近及远');
 		$sortSelect = array();
 		foreach($sortBox as $key => $value){
 			$selected = ($key==$sortType)?'selected="selected"':'';
@@ -498,7 +505,7 @@ class SystemController extends baseController
 
 	public function systemNoticeAction()
 	{
-		$systemModel = new SystemModel();
+		$adminModel = new adminModel();
 		$searchTag = trim($_REQUEST['searchTag']);
 		$onPage = max(intval($_REQUEST['onPage']),1);
 		$pageSize = 30;
@@ -506,7 +513,7 @@ class SystemController extends baseController
 		if(!empty($searchTag)) {
 			$filter .= " AND title LIKE ('%$searchTag%')";
 		}
-		$noticeList = $systemModel->getSystemNoticeList($onPage,$pageSize,$filter);
+		$noticeList = $adminModel->getSystemNoticeList($onPage,$pageSize,$filter);
 
 		$goToUrl = "index.php?controller=system&action=systemNotice&searchTag=$searchTag";
 		$this->Views->assign('searchTag',$searchTag);
@@ -517,15 +524,15 @@ class SystemController extends baseController
 
 	public function createNotice()
 	{
-		$systemModel = new SystemModel();
+		$adminModel = new adminModel();
 		$aType = trim($_REQUEST['aType']);
 		$notice = $_POST['notice'];
 
 		if ($aType=='createNotice') {
-			if ( $systemModel->createNotice($notice) ) {
-				$this->Alert('Ìí¼Ó¹«¸æ³É¹¦','index.php?controller=system&action=systemNotice');
+			if ( $adminModel->createNotice($notice) ) {
+				$this->Alert('添加公告成功','index.php?controller=system&action=systemNotice');
 			}else{
-				$this->Alert('Ìí¼Ó¹ã¸æÊ§°Ü');
+				$this->Alert('添加广告失败');
 			}
 		}
 		$this->Views->assign('time',date('Y-m-d H:i:s',time()));
@@ -534,27 +541,27 @@ class SystemController extends baseController
 
 	public function noticeModify()
 	{
-		$systemModel = new SystemModel();
+		$adminModel = new adminModel();
 		$id = intval($_REQUEST['id']);
 		$aType = trim($_REQUEST['aType']);
 		$notice = $_POST['notice'];
 
 		if ($aType=='noticeModify')
 		{
-			if ( $systemModel->setNoticeField($notice) ) {
-				$this->Alert('ÐÞ¸Ä¹«¸æ³É¹¦','index.php?controller=system&action=systemNotice');
+			if ( $adminModel->setNoticeField($notice) ) {
+				$this->Alert('修改公告成功','index.php?controller=system&action=systemNotice');
 			}else{
-				$this->Alert('ÐÞ¸Ä¹ã¸æÊ§°Ü');
+				$this->Alert('修改广告失败');
 			}
 		}else{
-			$noticeInfo = $systemModel->getNoticeDetailById($id);
+			$noticeInfo = $adminModel->getNoticeDetailById($id);
 			$this->Views->assign('noticeInfo',$noticeInfo);
 		}
 		$this->Views->display('noticeModify.html');
 	}
 
 	public function operationLogListAction(){
-		$systemModel = new SystemModel();
+		$adminModel = new adminModel();
 		$searchTag = trim($_REQUEST['searchTag']);
 		$module = trim($_REQUEST['module']);
 		$table = trim($_REQUEST['table']);
@@ -581,9 +588,9 @@ class SystemController extends baseController
 
 		$filter .= " ORDER BY update_time DESC";
 
-		$logList = $systemModel->getLogList($onPage,$pageSize,$filter);
+		$logList = $adminModel->getLogList($onPage,$pageSize,$filter);
 
-		$modules = $systemModel->getLogModule();
+		$modules = $adminModel->getLogModule();
 		$goToUrl = "index.php?controller=system&action=operationLogList&searchTag=$searchTag&module=$module&table=$table&type=$type";
 
 		$this->Views->assign('modules',$modules);
@@ -598,12 +605,12 @@ class SystemController extends baseController
 
 	public function getLogTableNoAuthAction()
 	{
-		$systemModel = new SystemModel();
+		$adminModel = new adminModel();
 		$module = trim($_REQUEST['module']);
-		$html = "<option value=''>È«²¿Êý¾Ý±í</option>";
+		$html = "<option value=''>全部数据表</option>";
 		if ($module) 
 		{
-			$tables = $systemModel->getLogTables($module);
+			$tables = $adminModel->getLogTables($module);
 			if (!empty($tables)) 
 			{	
 				foreach ($tables as $key => $value) 
@@ -617,12 +624,12 @@ class SystemController extends baseController
 
 	public function getLogTypeNoAuthAction()
 	{
-		$systemModel = new SystemModel();
+		$adminModel = new adminModel();
 		$table = trim($_REQUEST['table']);
-		$html = "<option value=''>È«²¿²Ù×÷</option>";
+		$html = "<option value=''>全部操作</option>";
 		if ($table) 
 		{
-			$types = $systemModel->getLogTableType($table);
+			$types = $adminModel->getLogTableType($table);
 			if (!empty($types)) 
 			{	
 				foreach ($types as $key => $value) 

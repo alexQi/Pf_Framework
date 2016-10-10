@@ -6,13 +6,13 @@
 	<title>Perfect framework</title>
 	<link href="favicon.ico" rel="shortcut icon" />
 
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseSrc; ?>/web/css/default.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseSrc; ?>/web/js/themes/pepper-grinder/easyui.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseSrc; ?>/web/js/themes/icon.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseSrc; ?>web/css/default.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseSrc; ?>web/js/themes/pepper-grinder/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $this->baseSrc; ?>web/js/themes/icon.css" />
 
-	<script type="text/javascript" src="<?php echo $this->baseSrc; ?>/web/js/public.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseSrc; ?>/web/js/jquery-1.4.2.min.js"></script>
-	<script type="text/javascript" src="<?php echo $this->baseSrc; ?>/web/js/jquery.easyui.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseSrc; ?>web/js/public.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseSrc; ?>web/js/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="<?php echo $this->baseSrc; ?>web/js/jquery.easyui.js"></script>
 </head>
 <body class="easyui-layout" style="overflow-y: hidden" scroll="no">
 	<?php  include($viewFile);?>

@@ -1,5 +1,4 @@
 ﻿*{font-size:12px; font-family:Tahoma,Verdana,微软雅黑,新宋体}
-body{background:#D2E0F2; }
 a{ color:Black; text-decoration:none;}
 a:hover{ color:Red; text-decoration:underline;}
 .textbox03 {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
@@ -20,7 +19,6 @@ a:hover{ color:Red; text-decoration:underline;}
 .easyui-accordion ul li div.selected a{color:#416AA3; font-weight:bold;}
 
 
-
 .icon{padding:2px 9px; background:url(../images/tabicons.png) no-repeat; }
 .icon-sys{ background:url(../images/directory.png) no-repeat;}
 .icon-add{background-position: -19px 0px;}
@@ -29,4 +27,24 @@ a:hover{ color:Red; text-decoration:underline;}
 .icon-role{background-position: -360px -200px;}
 .icon-set{background-position: -380px -200px;}
 .icon-log{background-position: -380px -80px;}
+
+.sx{ padding:0 8px;}
+#mainTB{background:#fff; padding:3px;}
+.mainTable{ border:#DCDCDC 1px solid;margin-top:5px;}
+.mainTable th{cursor:default;border-right:#DCDCDC 1px solid; background:#EFEFEF; height:25px; line-height:25px;border-bottom:#DCDCDC 1px solid;text-align:center}
+.mainTable th span{ color:#333333;cursor:default;font-weight:normal;}
+.mainTable td{ /*color:#000; */height:22px; border-right:#DCDCDC 1px solid;border-bottom:#DCDCDC 1px solid;}/*color:#737979*/
+.table_none td{ border:0;}
+.table_b_none td{ border-bottom:0;}
+.searchBox{ height:20px;line-height:20px;border:1px solid #737979;}
+.list1{ margin:5px;}
+.list1 li{ line-height:30px;}
+.style1 {color: #fff;}
+.tableHeadTitle {color: #000000;}
+.firstRow {color: #344b50;}
+.style4 {color: #3b6375;}
+.style5 {color: #295568;}
+.Apage{display:block;height:24px;margin:auto;font-size:12px}
+.pageTitle{text-align:left;cursor:default;color:#212121;font-weight:bold;position:relative;cursor:default;height:26px;background:url(../images/page_title.gif) repeat-x; padding-left:5px;border:1px solid #DCDCDC;line-height:26px}
+.item{display: none;}
 

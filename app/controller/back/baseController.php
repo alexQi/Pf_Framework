@@ -7,6 +7,9 @@ class baseController extends Controller {
 
 	public function __construct(){
 		parent::__construct();
+		if (!isset($_SESSION[Perfect]) || $_SESSION[Perfect]['systemActive'] != true) {
+			$this->Alert("您还未登陆系统",'index.php?r=back/index/index');
+		}
 		$controllerName = $this->Perfect->Router['controller'];
 		$actionName = $this->Perfect->Router['action'];
 		$this->Menu = $this->Perfect->menu;
