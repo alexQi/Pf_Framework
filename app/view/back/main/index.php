@@ -182,17 +182,16 @@ $(function() {
 	})
 	$('#tabs').tabs('add',{
 		title:'欢迎登录',
-		content:createFrame('index.php?controller=index&action=welcome')
+		content:createFrame('index.php?r=back/main/welcome')
 	}).tabs({
 		onSelect: function (title) {
-			// var currTab = $('#tabs').tabs('getTab', title);
-			// alert(currTab);
-			// var iframe = $(currTab.panel('options').content);
+			var currTab = $('#tabs').tabs('getTab', title);
+			var iframe = $(currTab.panel('options').content);
 
-			// var src = iframe.attr('src');
-			// if(src){
-			// 	$('#tabs').tabs('update', { tab: currTab, options: { content: createFrame(src)} });
-			// }
+			var src = iframe.attr('src');
+			if(src){
+				$('#tabs').tabs('update', { tab: currTab, options: { content: createFrame(src)} });
+			}
 		}
 	});
 });

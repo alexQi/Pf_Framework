@@ -19,7 +19,7 @@ a:hover{ color:Red; text-decoration:underline;}
 .easyui-accordion ul li div.selected a{color:#416AA3; font-weight:bold;}
 
 
-.icon{padding:2px 9px; background:url(../images/tabicons.png) no-repeat; }
+.icon{padding:1px 8px; background:url(../images/tabicons.png) no-repeat; }
 .icon-sys{ background:url(../images/directory.png) no-repeat;}
 .icon-add{background-position: -19px 0px;}
 .icon-nav{background-position: -100px -18px;}
@@ -45,6 +45,6 @@ a:hover{ color:Red; text-decoration:underline;}
 .style4 {color: #3b6375;}
 .style5 {color: #295568;}
 .Apage{display:block;height:24px;margin:auto;font-size:12px}
-.pageTitle{text-align:left;cursor:default;color:#212121;font-weight:bold;position:relative;cursor:default;height:26px;background:url(../images/page_title.gif) repeat-x; padding-left:5px;border:1px solid #DCDCDC;line-height:26px}
+.pageTitle{text-align:left;cursor:default;color:#212121;font-weight:bold;position:relative;cursor:default;height:26px;padding-left:10px;border:1px solid #DCDCDC;line-height:26px}
 .item{display: none;}
 
