@@ -87,17 +87,14 @@ class baseController extends Controller {
 				}
 
 				$fatherAction = Router::getFatherRouterInfo();
-
 				$sysItemValue = array_flip($sysItemIndex);
-				
 				if (array_key_exists($actionName, $sysItemValue))
 				{
 					$activeIndex = $sysItemValue[$actionName];
 				}else{
-					$this->Alert("Sorry ".ucfirst($_SESSION[Perfect]['userAccount'])."，当前操作无权限!");
+					$activeIndex = -1;
 				}
-
-				$activeFatherIndex = $fatherAction='' ? $sysItemValue[$fatherAction]:'';
+				$activeFatherIndex = $fatherAction!='' ? $sysItemValue[$fatherAction]:'';
 				if(!in_array($activeIndex,$viewPermis) && $NoAuth!=true){
 					if($operationMark!==true){
 						$this->Alert("Sorry ".ucfirst($_SESSION[Perfect]['userAccount'])."，当前操作无权限!");

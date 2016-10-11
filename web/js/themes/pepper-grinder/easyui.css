@@ -1231,7 +1231,7 @@
 }
 .tabs li.tabs-selected a.tabs-inner {
   background-color: #B83400;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .tabs li a.tabs-inner {
   color: #654b24;
@@ -2472,7 +2472,7 @@
   border-width: 0 0 0 1px;
 }
 .messager-body {
-  padding: 10px 10px 10px 10px;
+  padding: 10px 10px 30px 10px;
   overflow: auto;
 }
 .messager-button {

@@ -2,29 +2,11 @@
 var _menus = {
 	"menus": [<?php echo $manageMenu; ?>]
 };
-$(function(){
-	InitLeftMenu();
+$(document).ready(function(){
+	InitLeftMenu()
 	tabClose();
 	tabCloseEven();
-})
 
-//初始化左侧
-function InitLeftMenu() {
-
-	$(".easyui-accordion").empty();
-	var menulist = "";
-   
-	$.each(_menus.menus, function(i, n) {
-		menulist += '<div title="'+n.menuname+'"  icon="'+n.icon+'" style="overflow:auto;">';
-		menulist += '<ul>';
-		$.each(n.menus, function(j, o) {
-			menulist += '<li><div><a target="mainFrame" href="' + o.url + '" ><span class="icon '+o.icon+'" >&nbsp;</span>' + o.menuname + '</a></div></li> ';
-		})
-		menulist += '</ul></div>';
-	})
-
-	$(".easyui-accordion").append(menulist);
-	
 	$('.easyui-accordion li a').click(function(){
 		var tabTitle = $(this).text();
 		var url = $(this).attr("href");
@@ -36,8 +18,31 @@ function InitLeftMenu() {
 	},function(){
 		$(this).parent().removeClass("hover");
 	});
+})
 
-	$(".easyui-accordion").accordion();
+function InitLeftMenu() {
+
+	$(".easyui-accordion").empty();
+	var menulist = "";
+   	var idx = 1;
+	$.each(_menus.menus, function(i, n) {
+		menulist = '<ul>';
+		$.each(n.menus, function(j, o) {
+			menulist += '<li><div><a target="mainFrame" href="' + o.url + '" ><span class="icon '+o.icon+'" >&nbsp;</span>' + o.menuname + '</a></div></li> ';
+		})
+		menulist += '</ul>';
+		var is_select = false;
+		if (idx==1) {
+			is_select = true;
+		};
+		$('#easyui-accordion').accordion('add',{
+			menuid:n.menuid,
+			title:n.menuname,
+			selected:is_select,
+			content:menulist
+		});
+		idx++;
+	})
 }
 
 function addTab(subtitle,url){
@@ -181,8 +186,8 @@ $(function() {
 
 	})
 	$('#tabs').tabs('add',{
-		title:'欢迎登录',
-		content:createFrame('index.php?r=back/main/welcome')
+		title:'this is an perfect world',
+		content:''
 	}).tabs({
 		onSelect: function (title) {
 			var currTab = $('#tabs').tabs('getTab', title);
@@ -217,9 +222,7 @@ $(function() {
 	<div class="footer">The Black Rose shall bloom once more.</div>
 </div>
 <div region="west" hide="true" split="false" title="导航菜单" style="width:180px;" id="west">
-	<div class="easyui-accordion" fit="true" border="false">
-		<!--  导航内容 -->
-	</div>
+	<div class="easyui-accordion" id="easyui-accordion" fit="true" border="false"></div>
 </div>
 <div id="mainPanle" region="center" style="background: #eee; overflow-y:hidden">
 	<div id="tabs" class="easyui-tabs" fit="true" border="false">

@@ -89,18 +89,10 @@ abstract class Controller {
 
 	public function Alert($msg=null, $goto = null){
 		$msg = str_replace('|','<br>',$msg);
-		$jsCode = '<html lang="zh-CN">';
-		$jsCode .= '<head><link rel="stylesheet" href="'.$this->baseSrc.'web/js/themes/pepper-grinder/easyui.css">';
-		$jsCode .= '<script src="'.$this->baseSrc.'web/js/themes/icon.css"></script>';
-		$jsCode .= '<script src="'.$this->baseSrc.'web/css/bootstrap.min.css"></script>';
-		$jsCode .= '<script src="'.$this->baseSrc.'web/css/bootstrap-theme.min.css"></script>';
-		$jsCode .= '<script src="'.$this->baseSrc.'web/js/jquery-1.4.2.min.js"></script>';
-		$jsCode .= '</head><body><script src="'.$this->baseSrc.'web/js/jquery.easyui.js"></script>';
-		$jsCode .= '<script language="javascript">';
-		$jsCode .= is_null($goto)?"$.messager.alert('提示','$msg','warning',function(){window.history.back();});":"$.messager.alert('提示','$msg','warning',function(){ window.location='{$goto}'; });";
-		$jsCode .= "</script></body>";
-		$jsCode .= "</html>";
-		exit($jsCode);
+		$path = $this->Perfect->config['viewConfig']['viewPath'].'/public/';
+		$fileName = $path.'alert.php';
+		require_once $fileName;
+		exit();
 	}
 
 	/**

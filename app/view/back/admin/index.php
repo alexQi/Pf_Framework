@@ -1,61 +1,58 @@
 <script type="text/javascript">
 $(document).ready(function(){
-	alert(111);
-	// $(document).keydown(function(e){
-	// 	if(e.keyCode==13){
-	// 		document.location.href='index.php?r=back/admin/index&searchTag='+$.trim($('#searchTag').val());
-	// 	}
-	// });
-	// $("#searchButton").click(function(){
-	// 	alert(11);
-	// 	window.location.href='index.php?r=back/admin/index&searchTag='+$.trim($('#searchTag').val());
-	// });
-	// $("#createManagerButton").click(function(){
-	// 	document.location.href='index.php?r=back/admin/index&adminDeal&dType=createManager';
-	// });
+	$(document).keydown(function(e){
+		if(e.keyCode==13){
+			document.location.href='index.php?r=back/admin/index&searchTag='+$.trim($('#searchTag').val());
+		}
+	});
+	$("#searchButton").click(function(){
+		window.location.href='index.php?r=back/admin/index&searchTag='+$.trim($('#searchTag').val());
+	});
+	$("#createManagerButton").click(function(){
+		window.location.href='index.php?r=back/admin/adminDeal&dType=createMember';
+	});
 });
 
-function modifyAccount (accountId) {
-	document.location.href='index.php?controller=system&action=systemDeal&dType=systemModifyManager&accountId='+accountId;
+function modifyAccount(accountId) {
+	window.location.href='index.php?r=back/admin/adminDeal&dType=memberModify&accountId='+accountId;
 }
 
 
-function lockAccount (accountId) {
+function lockAccount(accountId) {
 	$.messager.confirm('提示','确定要锁定该帐号么？',function(r){   
 		if (r){
-			document.location.href='index.php?controller=system&action=systemDeal&dType=systemLockManager&accountId='+accountId;
+			window.location.href='index.php?r=back/admin/adminDeal&dType=lockMember&accountId='+accountId;
 		}else{
 			return false;
 		}
 	});
 }
 
-function unLockAccount (accountId) {
+function unLockAccount(accountId) {
 	$.messager.confirm('提示','确定要解除该帐号的锁定么？',function(r){   
 		if (r){
-			document.location.href='index.php?controller=system&action=systemDeal&dType=systemUnLockManager&accountId='+accountId;  
+			window.location.href='index.php?r=back/admin/adminDeal&dType=unlockMember&accountId='+accountId;  
 		}else{
 			return false;
 		}
 	});
 }
 function sickManagerSystemLog(userName,token){
-	document.location.href="index.php?controller=system&action=systemDeal&dType=systemSickManageLog&userAccount="+userName+"&token="+token;
+	window.location.href="index.php?r=back/admin/adminDeal&dType=memberLog&userAccount="+userName+"&token="+token;
 }
 </script>
-</head>
-<body>
 <div id="mainTB">
 	<div class="pageTitle">帐号管理</div>
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mainTable">
 	<tr>
 		<td colspan="10" style="padding-left:10px;border-right:none;height:40px">
 			<span>关键字：<input type="text" id="searchTag" name="searchTag" value="<?php echo $searchTag; ?>" style="width:180px;height:24px;" class="searchBox" /></span>
-			<span style="margin-left:10px"><a id="searchButton" class="easyui-linkbutton" icon="icon-search" href="http://www.baidu.com">搜索</a></span>
+			<span style="margin-left:10px"><a id="searchButton" class="easyui-linkbutton" icon="icon-search" href="javascript:void(0)">搜索</a></span>
 			<span style="margin-left:10px"><a id="createManagerButton" class="easyui-linkbutton" icon="icon-add" href="javascript:void(0)">创建</a></span>
 		</td>
 	</tr>
 	<tr>
+		<th><span class="tableHeadTitle">ID</span></th>
 		<th><span class="tableHeadTitle">姓名</span></th>
 		<th><span class="tableHeadTitle">帐号</span></th>
 		<th><span class="tableHeadTitle">日志</span></th>
@@ -68,6 +65,7 @@ function sickManagerSystemLog(userName,token){
 	</tr>
 	<?php foreach($list as $info): ?>
 	<tr height="35px">
+		<td class="firstRow" style="text-align:center"><?php echo $info['admin_id']; ?></td>
 		<td class="firstRow" style="text-align:center"><?php echo $info['true_name']; ?></td>
 		<td class="firstRow" style="text-align:center;height:28px;line-height:28px;padding-left:10px"><?php echo $info['user_account']; ?></td>
 		<td class="firstRow" style="text-align:center">

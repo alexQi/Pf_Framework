@@ -5,6 +5,40 @@ if (!defined('Perfect')) exit('Blocking access to this script');
  */
 class adminController extends baseController
 {
+	public function adminDealAction(){
+		$adminModel = new adminModel();
+		$dType = trim($_REQUEST['dType']);
+		if($dType=='createMember'){
+			$this->createMember(microtime());
+			exit;
+		}elseif($dType=='memberModify'){
+			$this->memberModify(microtime());
+			exit;
+		}elseif($dType=='lockMember'){
+			$intoData['admin_id'] = intval($_REQUEST['accountId']);
+			$intoData['is_closed'] = 1;
+			if($adminModel->setManagerField($intoData)){
+				$this->Alert('操作成功!');
+			}else{
+				$this->Alert('操作失败!');
+			}
+		}elseif($dType=='unlockMember'){
+			$intoData['admin_id'] = intval($_REQUEST['accountId']);
+			$intoData['is_closed'] = 0;
+			if($adminModel->setManagerField($intoData)){
+				$this->Alert('操作成功!');
+			}else{
+				$this->Alert('操作失败!');
+			}
+		}elseif($dType=='memberLog'){
+
+			$this->memberLog(microtime());
+
+		}else{
+			exit('非法操作！');
+		}
+	}
+
 	public function indexAction() {
 		$adminModel = new adminModel();
 		$searchTag = isset($_REQUEST['searchTag']) ? trim($_REQUEST['searchTag']) : '';
@@ -41,59 +75,9 @@ class adminController extends baseController
 		$this->display('index',$data);
 	}
 
-	function systemDealAction(){
-		$adminModel = new adminModel();
-		$dType = trim($_REQUEST['dType']);
-		if($dType=='systemCreateManager'){
-			$this->systemCreateManager(microtime());
-			exit;
-		}elseif($dType=='systemModifyManager'){
-			$this->systemManagerModify(microtime());
-			exit;
-		}elseif($dType=='systemLockManager'){
-			$intoData['admin_id'] = intval($_REQUEST['accountId']);
-			$intoData['is_closed'] = 1;
-			if($adminModel->setManagerField($intoData)){
-				$this->Alert('操作成功!');
-			}else{
-				$this->Alert('操作失败!');
-			}
-		}elseif($dType=='systemUnLockManager'){
-			$intoData['admin_id'] = intval($_REQUEST['accountId']);
-			$intoData['is_closed'] = 0;
-			if($adminModel->setManagerField($intoData)){
-				$this->Alert('操作成功!');
-			}else{
-				$this->Alert('操作失败!');
-			}
-		}elseif($dType=='systemSickManageLog'){
-
-			$this->systemAccountManageLogSick(microtime());
-
-		}elseif($dType=='createNotice'){
-
-			$this->createNotice(microtime());
-
-		}elseif($dType=='noticeModify'){
-
-			$this->noticeModify(microtime());
-
-		}elseif($dType=='deleteNotice'){
-
-			$id = intval($_REQUEST['id']);
-			if($adminModel->deleteNotice($id)){
-				$this->Alert('删除成功!');
-			}else{
-				$this->Alert('删除失败!');
-			}
-		}else{
-			exit('非法操作！');
-		}
-	}
-
-	function systemCreateManager($token){
+	function createMember($token){
 		if(empty($token)) exit('非法操作！');
-		$aType = trim($_REQUEST['aType']);
+		$aType = isset($_REQUEST['aType']) ? trim($_REQUEST['aType']) : false;
 		if($aType=='createSystemManager'){
 			$adminModel = new adminModel();
 			$intoData['user_account'] = trim($_POST['userName']);
@@ -165,15 +149,15 @@ class adminController extends baseController
 		$areaLimits = array();
 		$exportMenu = array();
 		$roleTypeSelect = array();
-		foreach($this->CONFIG['systemGroup'] as $key => $value){
+		foreach($this->Perfect->config['systemGroup'] as $key => $value){
 			array_push($userGroup,array('groupValue'=>$key,'groupName'=>$value));
 		}
 
-		foreach($this->CONFIG['province'] as $key => $value){
+		foreach($this->Perfect->config['province'] as $key => $value){
 			array_push($areaLimits,array('value' =>$key,'title'=>$value));
 		}
 
-		foreach($this->CONFIG['systemUserRole'] as $key => $value){
+		foreach($this->Perfect->config['systemUserRole'] as $key => $value){
 			array_push($roleTypeSelect,array('value' =>$key,'title'=>$value));
 		}
 		foreach($this->Menu['MENU'] as $key => $value){
@@ -182,7 +166,7 @@ class adminController extends baseController
 			foreach($this->Menu['ITEM'] as $k => $v){
 				if($key==$v['F']){
 					$temp = array('DK'=>$k,'DV'=>$v['T']);
-					if(!is_null($v['DTYPE'])){
+					if(isset($v['DTYPE'])){
 						$temp['DA'] = array();
 						foreach($this->Menu['DTYPE'][$v['DTYPE']] as $ad => $at){
 							array_push($temp['DA'],array('DAK'=>$ad,'DAT'=>$at['T']));
@@ -193,12 +177,11 @@ class adminController extends baseController
 				}
 			}
 		}
-
-		$this->Views->assign('exportMenu',$exportMenu);
-		$this->Views->assign('userGroup',$userGroup);
-		$this->Views->assign('roleTypeSelect',$roleTypeSelect);
-		$this->Views->assign('areaLimits',$areaLimits);
-		$this->Views->display('manager_create.html');
+		$data['exportMenu'] = $exportMenu;
+		$data['userGroup'] = $userGroup;
+		$data['roleTypeSelect'] = $roleTypeSelect;
+		$data['areaLimits'] = $areaLimits;
+		$this->display('createMember',$data);
 	}
 
 	function systemManagerModify($token){
@@ -281,17 +264,17 @@ class adminController extends baseController
 		$adminModel = new adminModel();
 		$accountInfo = $adminModel->getManagerDetailById($masterId);
 		$userGroup = $areaLimits = $exportMenu = $allowArea = $roleTypeSelect = array();
-		foreach($this->CONFIG['systemGroup'] as $key => $value){
+		foreach($this->Perfect->config['systemGroup'] as $key => $value){
 			$selected = ($key==$accountInfo['user_role'])?'selected="selected"':'';
 			array_push($userGroup,array('groupValue'=>$key,'tag'=>$selected,'groupName'=>$value));
 		}
 
-		foreach($this->CONFIG['province'] as $key => $value){
+		foreach($this->Perfect->config['province'] as $key => $value){
 			$selected = in_array($key,explode('|',$accountInfo['area_limits']))?'checked="checked"':'';
 			array_push($areaLimits,array('value' =>$key,'title'=>$value,'tag'=>$selected));
 		}
 
-		foreach($this->CONFIG['systemUserRole'] as $key => $value){
+		foreach($this->Perfect->config['systemUserRole'] as $key => $value){
 			$selected = ($key==$accountInfo['role_type'])?'selected="selected"':'';
 			array_push($roleTypeSelect,array('value' =>$key,'title'=>$value,'tag'=>$selected));
 		}
@@ -389,7 +372,7 @@ class adminController extends baseController
 
 		$recordList = $masterModel->getMamagerSystemLoginLog($onPage,$pageSize,$filter);
 		foreach($recordList['list'] as $key => $value){
-			$recordList['list'][$key]['user_role_tag'] = ($value['user_role']==-1)?'初始帐号':$this->CONFIG['systemGroup'][$value['user_role']];
+			$recordList['list'][$key]['user_role_tag'] = ($value['user_role']==-1)?'初始帐号':$this->Perfect->config['systemGroup'][$value['user_role']];
 		}
 
 		$goToUrl = "index.php?controller=system&action=systemManagerLoginManage&searchTag=$searchTag&searchIp=$searchIp&startDate=$startDate&overDate=$overDate";

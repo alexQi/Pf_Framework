@@ -33,7 +33,7 @@ $system_menu['ITEM'] = array(
 $system_menu['DTYPE'] = array(
 	'1010'=>array(
 		'1'=>array('T'=>'新建用户','D'=>'createMember'),
-		'2'=>array('T'=>'修改用户','D'=>'membermodify'),
+		'2'=>array('T'=>'修改用户','D'=>'memberModify'),
 		'3'=>array('T'=>'锁定用户','D'=>'lockMember'),
 		'4'=>array('T'=>'解锁用户','D'=>'unlockMember'),
 		'5'=>array('T'=>'会员日志','D'=>'memberLog'),

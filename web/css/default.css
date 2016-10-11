@@ -1,5 +1,6 @@
 ﻿*{font-size:12px; font-family:Tahoma,Verdana,微软雅黑,新宋体}
 a{ color:Black; text-decoration:none;}
+ol,ul,li { list-style:none;margin:0;padding:0;}
 a:hover{ color:Red; text-decoration:underline;}
 .textbox03 {border: #878787 1px solid;padding: 4px 3px;font:Verdana, Geneva, sans-serif,宋体;line-height: 14px; background-color: #fff;  height: auto; font-size: 14px;  font-weight: bold; width: 190px; }
 
