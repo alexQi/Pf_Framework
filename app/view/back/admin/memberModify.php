@@ -232,7 +232,7 @@ function checkChildSelect (focusObj,childrenName) {
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mainTable" style="margin:auto">
 	<?php foreach ($exportMenu as $key => $row): ?>
 	<tr>
-		<th style="width:100px;background:#FC8419;color:#FFFFFF"><?php echo $row['MENU']; ?></th>
+		<th style="width:100px;background:#b83400;color:#FFFFFF"><?php echo $row['MENU']; ?></th>
 		<th style="text-align:left;text-indent:10px;background:none"></th>
 	</tr>
 	<?php foreach ($row['MENUITEM'] as $k => $item): ?>
@@ -270,7 +270,7 @@ function checkChildSelect (focusObj,childrenName) {
 	<?php endforeach; ?>
 	<tr>
 		<td class="tableHeadTitle" style="width:140px;text-align:right;height:24px;border-right:none"></td>
-		<td style="text-align:left;text-indent:30px;height:45px;line-height:45px"><a id="saveButton" class="easyui-linkbutton" icon="icon-save" href="javascript:void(0);">修改</a></td>
+		<td style="text-align:left;height:45px;line-height:45px"><a id="saveButton" class="easyui-linkbutton" icon="icon-save" href="javascript:void(0);" style="width: 80px">修改</a></td>
 	</tr>
 	</table>
 	</td></tr>
