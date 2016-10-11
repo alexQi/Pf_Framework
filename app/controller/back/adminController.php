@@ -184,9 +184,9 @@ class adminController extends baseController
 		$this->display('createMember',$data);
 	}
 
-	function systemManagerModify($token){
+	function memberModify($token){
 		if(empty($token)) exit('非法操作！');
-		$aType = trim($_REQUEST['aType']);
+		$aType = isset($_REQUEST['aType']) ? trim($_REQUEST['aType']) : false;
 		if($aType=='systemModifyManager'){
 			$adminModel = new adminModel();
 			$intoData['admin_id'] = intval($_POST['accountId']);
@@ -208,8 +208,8 @@ class adminController extends baseController
 				$intoData['area_limits'] = 0;
 			}
 
-			$viewPermissions = (array)$_POST['viewPermissions'];
-			$operatingAuthority = (array)$_POST['operatingAuthority'];
+			$viewPermissions = $_POST['viewPermissions'];
+			$operatingAuthority = $_POST['operatingAuthority'];
 			if(empty($viewPermissions)){
 				$this->Alert('必须设置权限!');
 				exit;
@@ -262,7 +262,7 @@ class adminController extends baseController
 		}
 		$masterId = intval($_REQUEST['accountId']);
 		$adminModel = new adminModel();
-		$accountInfo = $adminModel->getManagerDetailById($masterId);
+		$accountInfo = $adminModel->getMemberDetailById($masterId);
 		$userGroup = $areaLimits = $exportMenu = $allowArea = $roleTypeSelect = array();
 		foreach($this->Perfect->config['systemGroup'] as $key => $value){
 			$selected = ($key==$accountInfo['user_role'])?'selected="selected"':'';
@@ -285,7 +285,7 @@ class adminController extends baseController
 			foreach($this->Menu['ITEM'] as $k => $v){
 				if($key==$v['F']){
 					$temp = array('DK'=>$k,'DV'=>$v['T']);
-					if(!is_null($v['DTYPE'])){
+					if(isset($v['DTYPE'])){
 						$temp['DA'] = array();
 						foreach($this->Menu['DTYPE'][$v['DTYPE']] as $ad => $at){
 							array_push($temp['DA'],array('DAK'=>$ad,'DAT'=>$at['T']));
@@ -298,12 +298,13 @@ class adminController extends baseController
 			array_push($exportMenu,$tempData);
 		}
 
-		$this->Views->assign('accountInfo',$accountInfo);
-		$this->Views->assign('exportMenu',$exportMenu);
-		$this->Views->assign('userGroup',$userGroup);
-		$this->Views->assign('roleTypeSelect',$roleTypeSelect);
-		$this->Views->assign('areaLimits',$areaLimits);
-		$this->Views->display('manager_modify.html');
+		$data['accountInfo'] = $accountInfo;
+		$data['exportMenu'] = $exportMenu;
+		$data['userGroup'] = $userGroup;
+		$data['roleTypeSelect'] = $roleTypeSelect;
+		$data['areaLimits'] = $areaLimits;
+
+		$this->display('memberModify',$data);
 	}
 
 	function systemAccountManageLogSick($token){

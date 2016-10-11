@@ -4,7 +4,12 @@ if (!defined('Perfect')) exit('Blocking access to this script');
 class adminModel extends Model {
 
 	public function getUserInfoByName($username){
-		$sql = "SELECT * FROM pf_admins WHERE user_account='$username'";
+		$sql = "SELECT * FROM pf_admins WHERE user_account='$username' LIMIT 1";
+		return $this->Db->fetch($sql);
+	}
+
+	public function getMemberDetailById($admin_id){
+		$sql = "SELECT * FROM pf_admins WHERE admin_id=$admin_id LIMIT 1";
 		return $this->Db->fetch($sql);
 	}
 
