@@ -144,7 +144,8 @@ function checkChildSelect (focusObj,childrenName) {
 <div id="mainTB">
 	<div class="pageTitle">创建系统帐号</div>
 	<form method="post" action="index.php?r=back/admin/adminDeal" name="createSystemManagerForm" id="createSystemManagerForm">
-	<input type="hidden" name="aType" value="createSystemManager">
+	<input type="hidden" name="aType" value="createMember">
+	<input type="hidden" name="dType" value="createMember">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mainTable">
 	<tr>
 		<td colspan="2" style="border-bottom:none">

@@ -27,48 +27,49 @@ $(document).ready(function(){
 			fieldObj = document.getElementById(fields);
 			if(fields=='passWord'){
 				if(!isNull(fieldObj.value) && !minLength(fieldObj.value,8)){
-					$.messager.alert('错误','密码不能少于8位！','error');
+					$.messager.alert('警告','密码不能少于8位！','warning');
 					return false;
 				}
 			}else if(fields=='trueName'){
 				if(isNull(fieldObj.value) || !minLength(fieldObj.value,2) || !isChinese(fieldObj.value)){
-					$.messager.alert('错误','请填写真实姓名！','error');
+					$.messager.alert('警告','请填写真实姓名！','warning');
 					return false;
 				}
 			}else if(fields=='qqAccount'){
 				if(isNull(fieldObj.value) || !isInteger(fieldObj.value) || !minLength(fieldObj.value,5)){
-					$.messager.alert('错误','请输入正确的QQ号码！','error');
+					$.messager.alert('警告','请输入正确的QQ号码！','warning');
 					return false;
 				}
 			}else if(fields=='privatePhone'){
 				if(isNull(fieldObj.value)){
-					$.messager.alert('错误','请输入联系电话！','error');
+					$.messager.alert('警告','请输入联系电话！','warning');
 					return false;
 				}
 			}else if(fields=='userRole'){
 				if(isNull(fieldObj.value)){
-					$.messager.alert('错误','必须选择帐号所属管理组！','error');
+					$.messager.alert('警告','必须选择帐号所属管理组！','warning');
 					return false;
 				}
 				if(fieldObj.value=='1' || fieldObj.value=='2'){
 					var customerLimit = document.getElementById('customerLimit');
 					if(customerLimit.value.trim()=='0' || !isInteger(customerLimit.value.trim()) || customerLimit.value.trim()<0){
-						$.messager.alert('错误','市场和媒介人员必须设置客户上限!','error');
+						$.messager.alert('警告','市场和媒介人员必须设置客户上限!','warning');
 						return false;
 					}
 					var nickName = document.getElementById('nickName');
 					if(isNull(nickName.value.trim())) {
-						$.messager.alert('错误','请填写媒介或市场人员马夹！','error');
+						$.messager.alert('警告','请填写媒介或市场人员马夹！','warning');
 						return false;
 					}
 				}
 			}else if(fields=='roleType'){
 				if(isNull(fieldObj.value)){
-					$.messager.alert('错误','必须设定帐号角色！','error');
+					$.messager.alert('警告','必须设定帐号角色！','warning');
 					return false;
 				}
 			}
 		}
+
 		purviewFieldBox = fatherForm.getElementsByTagName('input');
 		for(var i=0;i<purviewFieldBox.length;i++){
 			fieldName=purviewFieldBox[i].getAttribute('name');
@@ -85,6 +86,7 @@ $(document).ready(function(){
 				}
 			});
 		}
+
 		fatherForm.submit();
 	});
 });
@@ -152,10 +154,10 @@ function checkChildSelect (focusObj,childrenName) {
 <body>
 <div id="mainTB">
 	<div class="pageTitle">修改管理帐号</div>
-	<form method="post" action="index.php?controller=system&action=systemDeal" name="modifySystemManagerForm" id="modifySystemManagerForm">
+	<form method="post" action="index.php?r=back/admin/adminDeal" name="modifySystemManagerForm" id="modifySystemManagerForm">
 	<input type="hidden" name="accountId" id="accountId" value="<?php echo $accountInfo['admin_id']; ?>">
-	<input type="hidden" name="dType" value="systemModifyManager">
-	<input type="hidden" name="aType" value="systemModifyManager">
+	<input type="hidden" name="dType" value="memberModify">
+	<input type="hidden" name="aType" value="memberModify">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mainTable">
 	<tr>
 		<td class="tableHeadTitle" style="width:140px;text-align:right;height:24px">帐号：</td>
