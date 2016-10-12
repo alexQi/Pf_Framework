@@ -363,14 +363,14 @@ class adminController extends baseController
 
 	public function operationLogListAction(){
 		$adminModel = new adminModel();
-		$searchTag = trim($_REQUEST['searchTag']);
-		$module = trim($_REQUEST['module']);
-		$table = trim($_REQUEST['table']);
-		$type = trim($_REQUEST['type']);
-		$onPage = max(intval($_REQUEST['onPage']),1);
+		$searchTag = isset($_REQUEST['searchTag']) ? trim($_REQUEST['searchTag']):'';
+		$module = isset($_REQUEST['module']) ? trim($_REQUEST['module']):'';
+		$table = isset($_REQUEST['table']) ? trim($_REQUEST['table']):'';
+		$type = isset($_REQUEST['type']) ? trim($_REQUEST['type']):'';
+		$onPage = isset($_REQUEST['onPage']) ? max(intval($_REQUEST['onPage']),1):1;
 		$pageSize = 30;
 		$filter = ' 1=1 ';
-		if(!empty($searchTag)) 
+		if($searchTag) 
 		{
 			$filter .= " AND ( content LIKE ('%$searchTag%') OR true_name LIKE ('%$searchTag%') )";
 		}
@@ -389,19 +389,24 @@ class adminController extends baseController
 
 		$filter .= " ORDER BY update_time DESC";
 
-		$logList = $adminModel->getLogList($onPage,$pageSize,$filter);
-
+		$logList = $adminModel->getOperationLogs($onPage,$pageSize,$filter);
 		$modules = $adminModel->getLogModule();
-		$goToUrl = "index.php?controller=system&action=operationLogList&searchTag=$searchTag&module=$module&table=$table&type=$type";
+		$params = array(
+		            'total_rows'=>$logList['count'],
+		            'goto' =>$this->Url."&searchTag=$searchTag&module=$module&table=$table&type=$type",
+		            'now_page'  =>$onPage,
+		            'list_rows' =>$pageSize,
+		);
+		$page = new Page($params);
 
-		$this->Views->assign('modules',$modules);
-		$this->Views->assign('module',$module);
-		$this->Views->assign('table',$table);
-		$this->Views->assign('type',$type);
-		$this->Views->assign('searchTag',$searchTag);
-		$this->Views->assign('logList',$logList['list']);
-		$this->Views->assign('pageList',$this->pagelist($logList['count'],$pageSize,$goToUrl));
-		$this->Views->display('logList.html');
+		$data['modules'] = $modules;
+		$data['module'] = $module;
+		$data['table'] = $table;
+		$data['type'] = $type;
+		$data['logList'] = $logList['list'];
+		$data['searchTag'] = $searchTag;
+		$data['page'] = $page->showPage();
+		$this->display('memberOperationLog',$data);
 	}
 
 	public function getLogTableNoAuthAction()

@@ -107,6 +107,38 @@ class adminModel extends Model {
 		return $logList;
 	}
 
+	public function getOperationLogs($onPage=1,$pageSize=20,$filter) {
+		$offSet = $pageSize*($onPage-1);
+		$sql = "SELECT *
+			FROM pf_operation_log OL
+			LEFT JOIN ".self::table." AM ON OL.`admin_id`=AM.`admin_id`
+			WHERE $filter
+			LIMIT $offSet,$pageSize";
+		$sqls = "SELECT count(*) as count
+			 FROM pf_operation_log OL
+			 LEFT JOIN ".self::table." AM ON OL.`admin_id`=AM.`admin_id`
+			 WHERE $filter";
+		$countLine = $this->Db->fetch($sqls);
+		$allLine = $this->Db->fetchAll($sql);
+		unset($onPage,$pageSize,$filter,$offSet,$sql,$sqls);
+		return array('list'=>$allLine,'count'=>$countLine['count']);
+	}
+
+	public function getLogModule(){
+		$sql = "SELECT `module` FROM pf_operation_log GROUP BY `module`";
+		return $this->Db->fetchAll($sql);
+	}
+
+	public function getLogTables($module){
+		$sql = "SELECT `table` FROM pf_operation_log WHERE `module`='$module' GROUP BY `table`";
+		return $this->Db->fetchAll($sql);
+	}
+	
+	public function getLogTableType($table){
+		$sql = "SELECT type FROM pf_operation_log WHERE `table`='$table' GROUP BY type";
+		return $this->Db->fetchAll($sql);
+	}
+
 }
 
 
