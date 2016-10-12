@@ -8,16 +8,19 @@ class indexController extends Controller {
 	public function indexAction(){
 		$data = array();
 		if (isset($_REQUEST['username']) && $_REQUEST['username']!='' && isset($_REQUEST['password']) && $_REQUEST['password']!='' ) {
-			$username = $_REQUEST['username'];
-			$password  = $_REQUEST['password'];
+			$username = trim($_REQUEST['username']);
+			$password  = MD5(trim($_REQUEST['password']));
 			$adminModel = new adminModel;
 			$userInfo = $adminModel->getUserInfoByName($username);
 			try {
 				if (!$userInfo) {
 					throw new Pf_Exception("当前用户不存在");
 				}
-				if (!$userInfo['password']==$password) {
+				if ($userInfo['password']!=$password) {
 					throw new Pf_Exception("密码不正确");
+				}
+				if ($userInfo['is_closed']==1) {
+					throw new Pf_Exception("账号已被锁定，请联系管理员");
 				}
 
 				if(getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), "unknown")){
@@ -87,10 +90,11 @@ class indexController extends Controller {
 				exit();
 			} catch (Pf_Exception $e) {
 				$data['error_message'] = $e->getMessage();
+				$this->Alert($data['error_message']);
 			}
 		}
 
-		$this->display('index',$data,'main_login');
+		$this->display('index',$data,'mainLogin');
 	}
 
 	/**

@@ -35,10 +35,11 @@ $CONFIG['systemGroup'] = array (
 );
 
 $CONFIG['systemUserRole'] = array (
-	'0' => '总经理',
-	'1' => '经理',
-	'2' => '主管',
-	'3' => '职员',
+	'0' => '[总经理]',
+	'1' => '[经理]',
+	'2' => '[主管]',
+	'3' => '[职员]',
+	'1000'=>'[系统管理员]'
 );
 
 $CONFIG['systemAccountStatus'] = array (

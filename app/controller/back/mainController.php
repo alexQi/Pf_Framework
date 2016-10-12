@@ -73,7 +73,7 @@ class mainController extends baseController {
 			}
 		}
 		$data['manageMenu'] = join(',',$expMenu);
-		$this->display('index',$data);
+		$this->display('index',$data,'mainIndex');
 	}
 
 	public function welcomeAction(){

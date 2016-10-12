@@ -14,7 +14,7 @@
 	<script type="text/javascript" src="<?php echo $this->baseSrc; ?>web/js/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo $this->baseSrc; ?>web/js/jquery.easyui.min.js"></script>
 </head>
-<body>
+<body class="easyui-layout" style="overflow-y: hidden" scroll="no">
 	<?php  include($viewFile);?>
 </body>
 </html>

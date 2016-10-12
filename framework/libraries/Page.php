@@ -133,10 +133,14 @@ class Page
 		return '';
 	}
 
+	public function showPage($type='links'){
+		return $this->$type();
+	}
+
 	/**
 	 *  display Pager 
 	 */
-	public function showPage()
+	public function drop()
 	{
 		if($this->total_rows < 1)
 		{
@@ -174,5 +178,46 @@ class Page
 		}
 		 $return .= '</select> 页<span>';
 		return $return;
+	}
+
+	public function links(){
+		$onPage = $this->now_page;
+		if($this->total_rows>0){
+
+			$nextPage=$onPage+1;
+			$prePage=$onPage-1;
+
+			if($nextPage>$this->total_pages) $nextPage=$this->total_pages;
+			if($prePage<1) $prePage=1;
+
+			$tmp=$onPage-5;
+			if($tmp<1) $tmp=1;
+			$tmpTotalPage=$tmp;
+			for($i=0;$i<9;$i++){
+				$tmpTotalPage++;
+			}
+			if($tmpTotalPage>$this->total_pages) $tmpTotalPage=$this->total_pages;
+			$show = '';
+			for($i=$tmp;$i<=$tmpTotalPage;$i++){
+				if($i==$onPage){
+					$show.='<td style="height:24px;line-height:24px;text-align:center;width:50px;border-left:#DCDCDC 1px solid;font-size:20px;color:#398ACA;font-weight:bold">'.$i.'</td>';
+				}else{
+					$show.='<td style="height:24px;line-height:24px;text-align:center;width:50px;border-left:#DCDCDC 1px solid"><a class="Apage" href="'.$this->goto.'&onPage='.$i.'" title="第'.$i.'页">'.$i.'</a></td>';
+				}
+			}
+			$pageList='<table width="100%" style="margin-top:2px;height:24px;background:#EFEFEF;line-height:24px;border:#DCDCDC 1px solid;">';
+			$pageList.='<tr style="border:1px solid #DCDCDC">';
+			$pageList.='<td style="text-indent:8px"><span style="margin-right:2px;text-decoration:none;">当前共有<font style="font-size:12px;font-weight:bold">'.$this->total_rows.'</font>条记录，分<font style="font-size:12px;font-weight:bold">'.$this->total_pages.'</font>页，每页<font style="font-size:12px;font-weight:bold">'.$this->list_rows.'</font>条记录，当前为第<font style="font-size:12px;font-weight:bold">'.$onPage.'</font>页&nbsp;</span></td>';
+			$pageList.='<td  style="text-align:center;width:60px;border-left:#DCDCDC 1px solid"><a class="Apage" href="'.$this->goto.'&onPage=1" title="首页">首页</a></td>';
+			$pageList.='<td style="text-align:center;width:60px;border-left:#DCDCDC 1px solid"><a class="Apage" href="'.$this->goto.'&onPage='.$prePage.'" title="上一页">上一页</a></td>'.$show;
+			$pageList.='<td style="text-align:center;width:60px;border-left:#DCDCDC 1px solid"><a class="Apage" href="'.$this->goto.'&onPage='.$nextPage.'" title="下一页">下一页</a></td>';
+			$pageList.='<td style="text-align:center;width:60px;border-left:#DCDCDC 1px solid"><a class="Apage" href="'.$this->goto.'&onPage='.$this->total_pages.'" title="尾页">尾页</a></td></tr>';
+			$pageList.='</table>';
+		}else{
+			$pageList='<table width="100%" height="24" style="border:1px solid #DCDCDC;margin-top:5px;text-align:center">';
+			$pageList.='<tr><td><font style="color:#333333">无记录</font></td></tr>';
+			$pageList.='</table>';
+		}
+		return $pageList;
 	}
 }

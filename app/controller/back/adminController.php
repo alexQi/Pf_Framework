@@ -17,7 +17,7 @@ class adminController extends baseController
 		}elseif($dType=='lockMember'){
 			$intoData['admin_id'] = intval($_REQUEST['accountId']);
 			$intoData['is_closed'] = 1;
-			if($adminModel->setManagerField($intoData)){
+			if($adminModel->setAdminField($intoData)){
 				$this->Alert('操作成功!');
 			}else{
 				$this->Alert('操作失败!');
@@ -25,7 +25,7 @@ class adminController extends baseController
 		}elseif($dType=='unlockMember'){
 			$intoData['admin_id'] = intval($_REQUEST['accountId']);
 			$intoData['is_closed'] = 0;
-			if($adminModel->setManagerField($intoData)){
+			if($adminModel->setAdminField($intoData)){
 				$this->Alert('操作成功!');
 			}else{
 				$this->Alert('操作失败!');
@@ -35,7 +35,8 @@ class adminController extends baseController
 			$this->memberLog(microtime());
 
 		}else{
-			exit('非法操作！');
+			$this->Alert('非法操作!');
+			exit();
 		}
 	}
 
@@ -78,18 +79,18 @@ class adminController extends baseController
 	function createMember($token){
 		if(empty($token)) exit('非法操作！');
 		$aType = isset($_REQUEST['aType']) ? trim($_REQUEST['aType']) : false;
-		if($aType=='createSystemManager'){
+		if($aType=='createMember'){
 			$adminModel = new adminModel();
 			$intoData['user_account'] = trim($_POST['userName']);
 			$intoData['password'] = MD5($_POST['passWord']);
 			$intoData['true_name'] = trim($_POST['trueName']);
 			$intoData['qq'] = intval($_POST['qqAccount']);
 			$intoData['mobile'] = trim($_POST['privatePhone']);
-			$intoData['tel'] = trim($_POST['officePhone']);
 			$intoData['user_role'] = intval($_POST['userRole']);
 			$intoData['role_type'] = intval($_POST['userRoleType']);
 			$intoData['nick_name'] = trim($_POST['nickName']);
-			$intoData['customer_limit'] = intval($_POST['customerLimit']);
+
+			$areaLimits = isset($_POST['areaLimits']) ? $_POST['areaLimits'] : array();
 
 			if(is_array($_POST['areaLimits']) && !empty($_POST['areaLimits'])){
 				$intoData['area_limits'] = join("|",$_POST['areaLimits']);
@@ -97,8 +98,8 @@ class adminController extends baseController
 				$intoData['area_limits'] = 0;
 			}
 
-			$viewPermissions = (array)$_POST['viewPermissions'];
-			$operatingAuthority = (array)$_POST['operatingAuthority'];
+			$viewPermissions = isset($_POST['viewPermissions']) ? $_POST['viewPermissions'] : array();
+			$operatingAuthority = isset($_POST['operatingAuthority']) ? $_POST['operatingAuthority'] : array();
 			if(empty($viewPermissions)){
 				$this->Alert('必须设置权限!');
 				exit;
@@ -128,8 +129,8 @@ class adminController extends baseController
 			}
 
 			$userTouch = join('|',$intoUusertouchTemp);
-			if($_SESSION[FEELINGS]['userRole']!=-1){
-				if(in_array($_SESSION[FEELINGS]['userRole'],array('0','3')) && in_array($_SESSION[FEELINGS]['roleType'],array('0','1'))) {
+			if($_SESSION[Perfect]['userRole']!=-1){
+				if($_SESSION[Perfect]['userRole']==1 && $_SESSION[Perfect]['roleType']==1000) {
 					$intoData['user_touch'] = $userTouch;
 				}else{
 					$this->Alert('非法操作!');
@@ -138,8 +139,8 @@ class adminController extends baseController
 			}else{
 				$intoData['user_touch'] = $userTouch;
 			}
-			if($adminModel->createManagerMamber($intoData)){
-				$this->Alert('帐号创建成功!');
+			if($adminModel->createMember($intoData)){
+				$this->Alert('帐号创建成功!','index.php?r=back/admin/index');
 			}else{
 				$this->Alert('帐号创建失败!');
 			}
@@ -187,7 +188,7 @@ class adminController extends baseController
 	function memberModify($token){
 		if(empty($token)) exit('非法操作！');
 		$aType = isset($_REQUEST['aType']) ? trim($_REQUEST['aType']) : false;
-		if($aType=='systemModifyManager'){
+		if($aType=='memberModify'){
 			$adminModel = new adminModel();
 			$intoData['admin_id'] = intval($_POST['accountId']);
 			if(!empty($_POST['passWord'])){
@@ -196,20 +197,20 @@ class adminController extends baseController
 			$intoData['true_name'] = trim($_POST['trueName']);
 			$intoData['qq'] = intval($_POST['qqAccount']);
 			$intoData['mobile'] = trim($_POST['privatePhone']);
-			$intoData['tel'] = trim($_POST['officePhone']);
 			$intoData['nick_name'] = trim($_POST['nickName']);
 			$intoData['user_role'] = intval($_POST['userRole']);
 			$intoData['role_type'] = intval($_POST['roleType']);
-			$intoData['customer_limit'] = intval($_POST['customerLimit']);
 
-			if(is_array($_POST['areaLimits']) && !empty($_POST['areaLimits'])){
+			$areaLimits = isset($_POST['areaLimits']) ? $_POST['areaLimits'] : array();
+
+			if(is_array($areaLimits) && !empty($areaLimits)){
 				$intoData['area_limits'] = join("|",$_POST['areaLimits']);
 			}else{
 				$intoData['area_limits'] = 0;
 			}
 
-			$viewPermissions = $_POST['viewPermissions'];
-			$operatingAuthority = $_POST['operatingAuthority'];
+			$viewPermissions = isset($_POST['viewPermissions']) ? $_POST['viewPermissions'] : array();
+			$operatingAuthority = isset($_POST['operatingAuthority']) ? $_POST['operatingAuthority'] : array();
 			if(empty($viewPermissions)){
 				$this->Alert('必须设置权限!');
 				exit;
@@ -239,8 +240,8 @@ class adminController extends baseController
 			}
 
 			$userTouch = join('|',$intoUusertouchTemp);
-			if($_SESSION[FEELINGS]['userRole']!=-1){
-				if(in_array($_SESSION[FEELINGS]['userRole'],array('0','3')) && in_array($_SESSION[FEELINGS]['roleType'],array('0','1'))) {
+			if($_SESSION[Perfect]['userRole']!=-1){
+				if($_SESSION[Perfect]['userRole']==1 && $_SESSION[Perfect]['roleType']==1000) {
 					if($intoData['user_role']==0 || $intoData['role_type']==0){
 						$this->Alert('非法操作!');
 						exit;
@@ -253,7 +254,7 @@ class adminController extends baseController
 			}else{
 				$intoData['user_touch'] = $userTouch;
 			}
-			if($adminModel->setManagerField($intoData)){
+			if($adminModel->setAdminField($intoData)){
 				$this->Alert('修改成功!');
 			}else{
 				$this->Alert('修改失败!');
@@ -307,20 +308,22 @@ class adminController extends baseController
 		$this->display('memberModify',$data);
 	}
 
-	function systemAccountManageLogSick($token){
+	function memberLog($token){
 		if(empty($token)) exit('非法操作！');
-		$masterModel = new adminModel();
-		$onPage = max(intval($_REQUEST['onPage']),1);
-		$pageSize = 18;
-		$sortType = intval($_REQUEST['sortType']);
-		$offSet = $pageSize*($onPage-1);
+		$adminModel = new adminModel();
+		$onPage = isset($_REQUEST['onPage'])?max(intval($_REQUEST['onPage']),1):1;
+		$sortType = isset($_REQUEST['sortType'])?intval($_REQUEST['sortType']):0;
 		$userName = trim($_REQUEST['userAccount']);
-		if(!$_SESSION[FEELINGS]['systemDaddy']){
-			if($userName!=$_SESSION[FEELINGS]['userAccount']){
+		$pageSize = 23;
+		
+		$offSet = $pageSize*($onPage-1);
+		
+		if(!$_SESSION[Perfect]['root']!=-1){
+			if($userName!=$_SESSION[Perfect]['userAccount']){
 				exit('非法操作！');
 			}
 		}
-		$logDir = LOG_FOLDER.DS.$userName.DS;
+		$logDir = LOG_PATH.DS.$userName.DS;
 		$sickDate = empty($_REQUEST['sickDate'])?date("Y-m"):$_REQUEST['sickDate'];
 		foreach (glob($logDir."*.log") as $logFile) {
 			$date = substr(substr($logFile,-11),0,7);
@@ -334,214 +337,28 @@ class adminController extends baseController
 			array_push($sortSelect,array('title'=>$value,'value'=>$key,'tag'=>$selected));
 		}
 		$logFile = $logDir.$sickDate.'.log';
-		$masterLog = $masterModel->getMamagerSystemLog($logFile,$sortType);
-		if(is_array($masterLog)) $masterExpLog = array_slice($masterLog,$offSet,$pageSize);
-		$goToUrl = 'index.php?controller=system&action=systemDeal&dType=systemSickManageLog&sortType='.$sortType.'&sickDate='.$sickDate.'&userAccount='.$userName;
-		$this->Views->assign('masterLog', $masterExpLog);
-		$this->Views->assign('userAccount', $userName);
-		$this->Views->assign('sortSelect',$sortSelect);
-		$this->Views->assign('pageList',$this->pagelist(count($masterLog),$pageSize,$goToUrl));
-		$this->Views->assign('logDateBox', $logDateBox);
-		$this->Views->display('manager_admin_log.html');
-	}
-
-	function systemManagerLoginManageAction(){
-		$masterModel = new adminModel();
-		$searchTag = trim($_REQUEST['searchTag']);
-		$searchIp = trim($_REQUEST['searchIp']);
-		$onPage = max(intval($_REQUEST['onPage']),1);
-		$startDate = empty($_REQUEST['startDate'])?date('Y-m-d'):trim($_REQUEST['startDate']);
-		$overDate = empty($_REQUEST['overDate'])?date('Y-m-d'):trim($_REQUEST['overDate']);
-		$pageSize = 50;
-		$filter = '';
-
-		if(!empty($searchTag)) {
-			$filter .= " AND (M.user_account LIKE '%$searchTag%' OR M.true_name LIKE ('%$searchTag%'))";
-		}
-
-		if($startDate>$overDate || $startDate==$overDate){
-			$overDate = $startDate;
-			$filter.= " AND LL.date>='{$startDate}' AND LL.date<='{$overDate}'";
+		$sickLog = $adminModel->getAdminSickLog($logFile,$sortType);
+		if(is_array($sickLog)){
+			$adminExpLog = array_slice($sickLog,$offSet,$pageSize);
 		}else{
-			$filter.= " AND LL.date>='{$startDate}' AND LL.date<='{$overDate}'";
+			$adminExpLog = array();
 		}
 
-		if(!empty($searchIp)){
-			$filter.= " AND LL.ip='{$searchIp}'";
-		}
-		$filter.= " ORDER BY LL.time DESC";
+		$params = array(
+		            'total_rows'=>count($sickLog),
+		            'goto' =>$this->Url.'&dType=memberLog&sortType='.$sortType.'&sickDate='.$sickDate.'&userAccount='.$userName,
+		            'now_page'  =>$onPage,
+		            'list_rows' =>$pageSize,
+		);
+		$page = new Page($params);
 
-		$recordList = $masterModel->getMamagerSystemLoginLog($onPage,$pageSize,$filter);
-		foreach($recordList['list'] as $key => $value){
-			$recordList['list'][$key]['user_role_tag'] = ($value['user_role']==-1)?'初始帐号':$this->Perfect->config['systemGroup'][$value['user_role']];
-		}
+		$data['sickLog'] = $adminExpLog;
+		$data['userName'] = $userName;
+		$data['sortSelect'] = $sortSelect;
+		$data['page'] = $page->showPage();
+		$data['logDateBox'] = $logDateBox;
 
-		$goToUrl = "index.php?controller=system&action=systemManagerLoginManage&searchTag=$searchTag&searchIp=$searchIp&startDate=$startDate&overDate=$overDate";
-		$this->Views->assign('searchTag',$searchTag);
-		$this->Views->assign('startDate',$startDate);
-		$this->Views->assign('overDate',$overDate);
-		$this->Views->assign('searchIp',$searchIp);
-		$this->Views->assign('recordList',$recordList['list']);
-		$this->Views->assign('pageList',$this->pagelist($recordList['count'],$pageSize,$goToUrl));
-		$this->Views->display('manager_login_log.html');
-	}
-
-	function siteMemberSystemLogManageAction(){
-		$masterModel = new adminModel();
-		$searchTag = trim($_REQUEST['searchTag']);
-		$searchIp = trim($_REQUEST['searchIp']);
-		$onPage = max(intval($_REQUEST['onPage']),1);
-		$startDate = empty($_REQUEST['startDate'])?date('Y-m-d 00:00:01'):trim($_REQUEST['startDate']);
-		$overDate = empty($_REQUEST['overDate'])?date('Y-m-d 23:59:59'):trim($_REQUEST['overDate']);
-		$pageSize = 50;
-		$filter = '';
-		if(!empty($searchTag)) {
-			$filter .= " AND (M.user_name LIKE '%$searchTag%' OR S.site_id LIKE ('%$searchTag%'))";
-		}
-
-		if($startDate>$overDate || $startDate==$overDate){
-			$overDate = $startDate;
-			$filter.= " AND LL.time>='{$startDate}' AND LL.time<='{$overDate}'";
-		}else{
-			$filter.= " AND LL.time>='{$startDate}' AND LL.time<='{$overDate}'";
-		}
-		if(!empty($searchIp)){
-			$filter.= " AND LL.ip='{$searchIp}'";
-		}
-		$filter.= " ORDER BY LL.time DESC";
-		$recordList = $masterModel->getSiteMemberSystemLog($onPage,$pageSize,$filter);
-		$goToUrl = "index.php?controller=system&action=siteMemberSystemLogManage&searchTag=$searchTag&searchIp=$searchIp&startDate=$startDate&overDate=$overDate";
-		$this->Views->assign('searchTag',$searchTag);
-		$this->Views->assign('startDate',$startDate);
-		$this->Views->assign('overDate',$overDate);
-		$this->Views->assign('searchIp',$searchIp);
-		$this->Views->assign('recordList',$recordList['list']);
-		$this->Views->assign('pageList',$this->pagelist($recordList['count'],$pageSize,$goToUrl));
-		$this->Views->display('member_system_log.html');
-	}
-
-	function advertiserMemberSystemLogManageAction(){
-		$masterModel = new adminModel();
-		$searchTag = trim($_REQUEST['searchTag']);
-		$searchIp = trim($_REQUEST['searchIp']);
-		$onPage = max(intval($_REQUEST['onPage']),1);
-		$startDate = empty($_REQUEST['startDate'])?date('Y-m-d 00:00:01'):trim($_REQUEST['startDate']);
-		$overDate = empty($_REQUEST['overDate'])?date('Y-m-d 23:59:59'):trim($_REQUEST['overDate']);
-		$pageSize = 50;
-		$filter = '';
-		if(!empty($searchTag)) {
-			$filter .= " AND (A.user_name LIKE '%$searchTag%')";
-		}
-
-		if($startDate>$overDate || $startDate==$overDate){
-			$overDate = $startDate;
-			$filter.= " AND AL.time>='{$startDate}' AND AL.time<='{$overDate}'";
-		}else{
-			$filter.= " AND AL.time>='{$startDate}' AND AL.time<='{$overDate}'";
-		}
-		if(!empty($searchIp)){
-			$filter.= " AND AL.ip='{$searchIp}'";
-		}
-		$filter.= " ORDER BY AL.time DESC";
-
-		$recordList = $masterModel->getAdvertiserMemberSystemLog($onPage,$pageSize,$filter);
-		$goToUrl = "index.php?controller=system&action=advertiserMemberSystemLogManage&searchTag=$searchTag&searchIp=$searchIp&startDate=$startDate&overDate=$overDate";
-		$this->Views->assign('searchTag',$searchTag);
-		$this->Views->assign('startDate',$startDate);
-		$this->Views->assign('overDate',$overDate);
-		$this->Views->assign('searchIp',$searchIp);
-		$this->Views->assign('recordList',$recordList['list']);
-		$this->Views->assign('pageList',$this->pagelist($recordList['count'],$pageSize,$goToUrl));
-		$this->Views->display('advertiser_system_log.html');
-	}
-
-	function systemManagerManageLogAction(){
-		$masterModel = new adminModel();
-		$onPage = max(intval($_REQUEST['onPage']),1);
-		$pageSize = 18;
-		$sortType = intval($_REQUEST['sortType']);
-		$offSet = $pageSize*($onPage-1);
-		$userName = $_SESSION[FEELINGS]['userAccount'];
-		$logDir = LOG_FOLDER.DS.$userName.DS;
-		$sickDate = empty($_REQUEST['sickDate'])?date("Y-m"):$_REQUEST['sickDate'];
-		foreach (glob($logDir."*.log") as $logFile) {
-			$date = substr(substr($logFile,-11),0,7);
-			$selected = ($sickDate==$date)?"selected":'';
-			$logDateBox[] = array('date'=>$date,'tag'=>$selected);
-		}
-		$sortBox = array('1'=>'按操作时间由远及近','2'=>'按操作时间由近及远');
-		$sortSelect = array();
-		foreach($sortBox as $key => $value){
-			$selected = ($key==$sortType)?'selected="selected"':'';
-			array_push($sortSelect,array('title'=>$value,'value'=>$key,'tag'=>$selected));
-		}
-		$logFile = $logDir.$sickDate.'.log';
-		$masterLog = $masterModel->getMamagerSystemLog($logFile,$sortType);
-		if(is_array($masterLog)) $masterExpLog = array_slice($masterLog,$offSet,$pageSize);
-		$goToUrl = 'index.php?controller=system&action=systemManagerManageLog&sortType='.$sortType.'&sickDate='.$sickDate;
-		$this->Views->assign('masterLog', $masterExpLog);
-		$this->Views->assign('userAccount', $userName);
-		$this->Views->assign('sortSelect',$sortSelect);
-		$this->Views->assign('pageList',$this->pagelist(count($masterLog),$pageSize,$goToUrl));
-		$this->Views->assign('logDateBox', $logDateBox);
-		$this->Views->display('manager_admin_log.html');
-	}
-
-	public function systemNoticeAction()
-	{
-		$adminModel = new adminModel();
-		$searchTag = trim($_REQUEST['searchTag']);
-		$onPage = max(intval($_REQUEST['onPage']),1);
-		$pageSize = 30;
-		$filter = ' 1=1 ';
-		if(!empty($searchTag)) {
-			$filter .= " AND title LIKE ('%$searchTag%')";
-		}
-		$noticeList = $adminModel->getSystemNoticeList($onPage,$pageSize,$filter);
-
-		$goToUrl = "index.php?controller=system&action=systemNotice&searchTag=$searchTag";
-		$this->Views->assign('searchTag',$searchTag);
-		$this->Views->assign('noticeList',$noticeList['list']);
-		$this->Views->assign('pageList',$this->pagelist($noticeList['count'],$pageSize,$goToUrl));
-		$this->Views->display('noticeList.html');
-	}
-
-	public function createNotice()
-	{
-		$adminModel = new adminModel();
-		$aType = trim($_REQUEST['aType']);
-		$notice = $_POST['notice'];
-
-		if ($aType=='createNotice') {
-			if ( $adminModel->createNotice($notice) ) {
-				$this->Alert('添加公告成功','index.php?controller=system&action=systemNotice');
-			}else{
-				$this->Alert('添加广告失败');
-			}
-		}
-		$this->Views->assign('time',date('Y-m-d H:i:s',time()));
-		$this->Views->display('createNotice.html');
-	}
-
-	public function noticeModify()
-	{
-		$adminModel = new adminModel();
-		$id = intval($_REQUEST['id']);
-		$aType = trim($_REQUEST['aType']);
-		$notice = $_POST['notice'];
-
-		if ($aType=='noticeModify')
-		{
-			if ( $adminModel->setNoticeField($notice) ) {
-				$this->Alert('修改公告成功','index.php?controller=system&action=systemNotice');
-			}else{
-				$this->Alert('修改广告失败');
-			}
-		}else{
-			$noticeInfo = $adminModel->getNoticeDetailById($id);
-			$this->Views->assign('noticeInfo',$noticeInfo);
-		}
-		$this->Views->display('noticeModify.html');
+		$this->display('adminSickLog',$data);
 	}
 
 	public function operationLogListAction(){

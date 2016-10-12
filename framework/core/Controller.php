@@ -65,28 +65,6 @@ abstract class Controller {
 		require_once $fileName;
 	}
 
-	function LogRecord($msg) {
-		$userAccount = $_SESSION[Perfect]['userAccount'];
-		$userName = $_SESSION[Perfect]['userName'];
-		$logDir = LOG_PATH.$userAccount.DS;
-
-		if(!is_dir($logDir)){
-			mkdir($logDir,0777,true);
-			chmod($logDir,0777);
-		}
-		$logFile = $logDir.date('Y-m').'.log';
-
-		if(file_exists($logFile)) chmod($logFile,0777);
-		
-		$nowTime = date('Y-m-d H:i:s');
-		$ip = $_SERVER["REMOTE_ADDR"]?$_SERVER["REMOTE_ADDR"]:$GLOBALS["HTTP_SERVER_VARS"]["REMOTE_ADDR"];
-		$this->IP->qqwry($ip);
-		$address = str_replace('CZ88.NET','',(iconv("utf-8","GBK//IGNORE",$this->IP->Country).iconv("utf-8","GBK//IGNORE",$this->IP->Local)));
-
-		$logLine = "$userName|$ip|$address|$nowTime|$msg\n";
-		file_put_contents($logFile,$logLine, FILE_APPEND|LOCK_EX);
-	}
-
 	public function Alert($msg=null, $goto = null){
 		$msg = str_replace('|','<br>',$msg);
 		$path = $this->Perfect->config['viewConfig']['viewPath'].'/public/';

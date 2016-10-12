@@ -2,55 +2,43 @@
 $(document).ready(function(){
 	$('#saveButton').click(function() {
 		var fields =String,fieldObj=Object,fatherForm=document.getElementById('createSystemManagerForm'),checkPermissions=0;
-		var verifyFiled = ['userName','passWord','trueName','qqAccount','privatePhone','officePhone','userRole','userRoleType'];
+		var verifyFiled = ['userName','passWord','trueName','qqAccount','privatePhone','userRole','userRoleType'];
 		for(var i = 0; i <verifyFiled.length;i++){
 			fields = verifyFiled[i];
 			fieldObj = document.getElementById(fields);
 			if(fields=='userName'){
-				if(isNull(fieldObj.value) || !minLength(fieldObj.value,6)){
-					$.messager.alert('错误','用户名不得小于6位!','error');
+				if(isNull(fieldObj.value) || !minLength(fieldObj.value,5)){
+					$.messager.alert('错误','用户名不得小于5位!','waining');
 					return false;
 				}
 			}else if(fields=='passWord'){
 				if(isNull(fieldObj.value) || !minLength(fieldObj.value,6)){
-					$.messager.alert('错误','密码不能少于6位！','error');
+					$.messager.alert('错误','密码不能少于6位！','waining');
 					return false;
 				}
 			}else if(fields=='trueName'){
 				if(isNull(fieldObj.value) || !minLength(fieldObj.value,2) || !isChinese(fieldObj.value)){
-					$.messager.alert('错误','请填写真实姓名！','error');
+					$.messager.alert('错误','请填写真实姓名！','waining');
 					return false;
 				}
 			}else if(fields=='qqAccount'){
 				if(isNull(fieldObj.value) || !isInteger(fieldObj.value) || !minLength(fieldObj.value,5)){
-					$.messager.alert('错误','请输入正确的QQ号码！','error');
+					$.messager.alert('错误','请输入正确的QQ号码！','waining');
 					return false;
 				}
 			}else if(fields=='privatePhone'){
 				if(isNull(fieldObj.value)){
-					$.messager.alert('错误','请输入联系电话！','error');
+					$.messager.alert('错误','请输入联系电话！','waining');
 					return false;
 				}
 			}else if(fields=='userRole'){
 				if(isNull(fieldObj.value)){
-					$.messager.alert('错误','必须选择帐号所属管理组！','error');
+					$.messager.alert('错误','必须选择帐号所属管理组！','waining');
 					return false;
-				}
-				if(fieldObj.value=='1' || fieldObj.value=='2'){
-					var customerLimit = document.getElementById('customerLimit');
-					if(customerLimit.value.trim()=='0' || !isInteger(customerLimit.value.trim()) || customerLimit.value.trim()<0){
-						$.messager.alert('错误','市场和媒介人员必须设置客户上限!','error');
-						return false;
-					}
-					var nickName = document.getElementById('nickName');
-					if(isNull(nickName.value.trim())) {
-						$.messager.alert('错误','请填写媒介或市场人员马夹！','error');
-						return false;
-					}
 				}
 			}else if(fields=='userRoleType'){
 				if(isNull(fieldObj.value)){
-					$.messager.alert('错误','必须设定帐号角色！','error');
+					$.messager.alert('错误','必须设定帐号角色！','waining');
 					return false;
 				}
 			}
@@ -71,11 +59,6 @@ $(document).ready(function(){
 				}
 			});
 		}
-		var dType = document.createElement('input');
-		dType.setAttribute('name','dType');
-		dType.setAttribute('type','hidden');
-		dType.setAttribute('value','systemCreateManager');
-		fatherForm.appendChild(dType);
 		fatherForm.submit();
 	});
 });
@@ -156,19 +139,17 @@ function checkChildSelect (focusObj,childrenName) {
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">密码：</td>
 				<td style="text-align:left;text-indent:5px"><input type="text" name="passWord" id="passWord" style="width:100px;height:18px;line-height:18px;border:1px solid #000000"></td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">真实姓名：</td>
-				<td style="text-align:left;text-indent:5px"><input type="text" name="trueName" id="trueName" style="width:80px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
+				<td style="text-align:left;text-indent:5px"><input type="text" name="trueName" id="trueName" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">QQ：</td>
-				<td style="text-align:left;text-indent:5px"><input type="text" name="qqAccount" id="qqAccount" style="width:90px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
+				<td style="text-align:left;text-indent:5px"><input type="text" name="qqAccount" id="qqAccount" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
 			</tr>
 			<tr>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">联系电话：</td>
 				<td style="text-align:left;text-indent:5px"><input type="text" name="privatePhone" id="privatePhone" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
-				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">办公电话：</td>
-				<td style="text-align:left;text-indent:5px"><input type="text" name="officePhone" id="officePhone" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">管理组：</td>
 				<td style="text-align:left;text-indent:5px">
 				<select id="userRole" name="userRole">
-				<option value=''>请选择帐号管理组</option>
+				<option value=''>请选择用户部门</option>
 					<?php foreach ($userGroup as $key => $group): ?>
 					<option value="<?php echo $group['groupValue']; ?>"><?php echo $group['groupName']; ?></option>	
 					<?php endforeach ?>
@@ -177,16 +158,15 @@ function checkChildSelect (focusObj,childrenName) {
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">角色：</td>
 				<td style="text-align:left;text-indent:5px">
 				<select id="userRoleType" name="userRoleType">
+					<option value=''>请选择用户角色</option>
 					<?php foreach ($roleTypeSelect as $key => $roleType): ?>
 					<option value="<?php echo $roleType['value']; ?>"><?php echo $roleType['title']; ?></option>
 					<?php endforeach ?>
 				</select>
 				</td>
-			</tr>
-			<tr>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">昵称：</td>
 				<td style="text-align:left;text-indent:5px">
-				<input type="text" name="nickName" id="nickName" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000">
+					<input type="text" name="nickName" id="nickName" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000">
 				</td>
 			</tr>
 			</table>

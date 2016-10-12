@@ -57,7 +57,7 @@ function sickManagerSystemLog(userName,token){
 		<th><span class="tableHeadTitle">帐号</span></th>
 		<th><span class="tableHeadTitle">日志</span></th>
 		<th><span class="tableHeadTitle">紧急联系电话</span></th>
-		<th><span class="tableHeadTitle">用户标识</span></th>
+		<th style="text-align:left;padding-left:20px;width:160px"><span class="tableHeadTitle">用户标识</span></th>
 		<th><span class="tableHeadTitle">最后登录时间</span></th>
 		<th><span class="tableHeadTitle">登陆次数</span></th>
 		<th><span class="tableHeadTitle">状态</span></th>
@@ -72,8 +72,8 @@ function sickManagerSystemLog(userName,token){
 			<span><a class="easyui-linkbutton" icon="icon-tip" href="javascript:sickManagerSystemLog('<?php echo $info['user_account']; ?>','<?php echo rand(1000,100000); ?>')">查看</a></span></span>
 		</td>
 		<td class="firstRow" style="text-align:center"><?php echo $info['mobile']; ?></td>
-		<td class="firstRow" style="text-align:center">
-			<?php echo $info['user_role_tag'].$info['role_type_tag']; ?>
+		<td class="firstRow" style="text-align:left;padding-left:20px;">
+			<?php echo $info['user_role_tag'].'-->'.$info['role_type_tag']; ?>
 		</td>
 		<td class="firstRow" style="text-align:center"><?php echo $info['last_time']; ?></td>
 		<td class="firstRow" style="text-align:center;color:#FF0000;width:80px"><?php echo $info['login_count']; ?></td>
@@ -105,10 +105,6 @@ function sickManagerSystemLog(userName,token){
 		</td>
 	</tr>
 	<?php endforeach; ?>
-	<tr>
-		<td colspan="10" style="padding-left:10px;border-right:none;height:40px;background: #EEEDED;">
-			<?php echo $page; ?>
-		</td>
-	</tr>
 	</table>
+	<?php echo $page; ?>
 </div>

@@ -21,7 +21,7 @@ $(document).ready(function(){
 	}
 	$('#saveButton').click(function() {
 		var fields =String,fieldObj=Object,fatherForm=document.getElementById('modifySystemManagerForm'),checkPermissions=0;
-		var verifyFiled = ['passWord','trueName','qqAccount','privatePhone','officePhone','userRole','roleType'];
+		var verifyFiled = ['passWord','trueName','qqAccount','privatePhone','userRole','roleType'];
 		for(var i = 0; i <verifyFiled.length;i++){
 			fields = verifyFiled[i];
 			fieldObj = document.getElementById(fields);
@@ -49,18 +49,6 @@ $(document).ready(function(){
 				if(isNull(fieldObj.value)){
 					$.messager.alert('警告','必须选择帐号所属管理组！','warning');
 					return false;
-				}
-				if(fieldObj.value=='1' || fieldObj.value=='2'){
-					var customerLimit = document.getElementById('customerLimit');
-					if(customerLimit.value.trim()=='0' || !isInteger(customerLimit.value.trim()) || customerLimit.value.trim()<0){
-						$.messager.alert('警告','市场和媒介人员必须设置客户上限!','warning');
-						return false;
-					}
-					var nickName = document.getElementById('nickName');
-					if(isNull(nickName.value.trim())) {
-						$.messager.alert('警告','请填写媒介或市场人员马夹！','warning');
-						return false;
-					}
 				}
 			}else if(fields=='roleType'){
 				if(isNull(fieldObj.value)){
@@ -155,9 +143,9 @@ function checkChildSelect (focusObj,childrenName) {
 <div id="mainTB">
 	<div class="pageTitle">修改管理帐号</div>
 	<form method="post" action="index.php?r=back/admin/adminDeal" name="modifySystemManagerForm" id="modifySystemManagerForm">
-	<input type="hidden" name="accountId" id="accountId" value="<?php echo $accountInfo['admin_id']; ?>">
 	<input type="hidden" name="dType" value="memberModify">
 	<input type="hidden" name="aType" value="memberModify">
+	<input type="hidden" name="accountId" id="accountId" value="<?php echo $accountInfo['admin_id']; ?>">
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mainTable">
 	<tr>
 		<td class="tableHeadTitle" style="width:140px;text-align:right;height:24px">帐号：</td>
@@ -178,10 +166,6 @@ function checkChildSelect (focusObj,childrenName) {
 	<tr>
 		<td class="tableHeadTitle" style="width:140px;text-align:right;height:24px">联系电话：</td>
 		<td style="text-align:left;text-indent:5px"><input type="text" name="privatePhone" id="privatePhone" style="width:145px;height:18px;line-height:18px;border:1px solid #000000" value="<?php echo $accountInfo['mobile']; ?>"></td>
-	</tr>
-	<tr>
-		<td class="tableHeadTitle" style="width:140px;text-align:right;height:24px">办公电话：</td>
-		<td style="text-align:left;text-indent:5px"><input type="text" name="officePhone" id="officePhone" style="width:145px;height:18px;line-height:18px;border:1px solid #000000" value="<?php echo $accountInfo['tel']; ?>"></td>
 	</tr>
 	<tr>
 		<td class="tableHeadTitle" style="width:140px;text-align:right;height:24px">帐号群组：</td>
