@@ -242,10 +242,10 @@ class adminController extends baseController
 			$userTouch = join('|',$intoUusertouchTemp);
 			if($_SESSION[Perfect]['userRole']!=-1){
 				if($_SESSION[Perfect]['userRole']==1 && $_SESSION[Perfect]['roleType']==1000) {
-					if($intoData['user_role']==0 || $intoData['role_type']==0){
-						$this->Alert('非法操作!');
-						exit;
-					}
+					// if($intoData['user_role']==0 || $intoData['role_type']==0){
+					// 	$this->Alert('1非法操作!');
+					// 	exit;
+					// }
 					$intoData['user_touch'] = $userTouch;
 				}else{
 					$this->Alert('非法操作!');

@@ -2,12 +2,13 @@
 if (!defined('Perfect')) exit('Blocking access to this script');
 
 $CONFIG['database'] = array(
-	'host'=>'localhost',//主机
-	'port'=>'3306',//端口
-	'username'=>'root',//用户
-	'password'=>'woshishei',//密码
-	'charset'=>'utf8',//连接字符集
-	'db'=>'ffwap',//数据库
+	'host'=>'localhost',
+	'port'=>'3306',
+	'username'=>'root',
+	'password'=>'woshishei',
+	'charset'=>'utf8',
+	'db'=>'ffwap',
+	'prefix'=>'pf_',
 );
 
 $CONFIG['router'] = array(

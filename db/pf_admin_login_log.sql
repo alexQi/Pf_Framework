@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50617
 File Encoding         : 65001
 
-Date: 2016-10-11 18:09:07
+Date: 2016-10-13 11:55:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -22,12 +22,12 @@ DROP TABLE IF EXISTS `pf_admin_login_log`;
 CREATE TABLE `pf_admin_login_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `admin_id` int(11) NOT NULL,
-  `ip` varchar(20) CHARACTER SET utf8 NOT NULL,
-  `address` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `ip` varchar(20) NOT NULL,
+  `address` varchar(100) NOT NULL,
   `time` datetime NOT NULL,
   `date` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=84 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of pf_admin_login_log
@@ -101,3 +101,16 @@ INSERT INTO `pf_admin_login_log` VALUES ('80', '64', '::1', '本机地址 ', '20
 INSERT INTO `pf_admin_login_log` VALUES ('81', '64', '::1', '本机地址 ', '2016-10-11 11:45:51', '2016-10-11');
 INSERT INTO `pf_admin_login_log` VALUES ('82', '64', '::1', '本机地址 ', '2016-10-11 14:43:41', '2016-10-11');
 INSERT INTO `pf_admin_login_log` VALUES ('83', '64', '::1', '本机地址 ', '2016-10-11 15:18:46', '2016-10-11');
+INSERT INTO `pf_admin_login_log` VALUES ('84', '64', '::1', '本机地址 ', '2016-10-12 09:14:50', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('85', '64', '::1', '本机地址 ', '2016-10-12 09:57:57', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('86', '64', '::1', '本机地址 ', '2016-10-12 09:58:52', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('87', '64', '::1', '本机地址 ', '2016-10-12 09:59:03', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('88', '64', '::1', '本机地址 ', '2016-10-12 10:01:39', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('89', '58', '::1', '本机地址 ', '2016-10-12 10:39:38', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('90', '64', '::1', '本机地址 ', '2016-10-12 10:42:55', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('91', '64', '::1', '本机地址 ', '2016-10-12 10:43:02', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('92', '64', '::1', '本机地址 ', '2016-10-12 10:45:02', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('93', '64', '::1', '本机地址 ', '2016-10-12 10:50:28', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('94', '64', '::1', '本机地址 ', '2016-10-12 14:18:15', '2016-10-12');
+INSERT INTO `pf_admin_login_log` VALUES ('95', '64', '::1', '本机地址 ', '2016-10-13 11:25:41', '2016-10-13');
+INSERT INTO `pf_admin_login_log` VALUES ('96', '64', '::1', '本机地址 ', '2016-10-13 11:30:55', '2016-10-13');

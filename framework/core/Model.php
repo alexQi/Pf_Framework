@@ -21,4 +21,8 @@ class Model {
 			$this->Perfect->Pf_Exception->init($this->Db->errorMessage);
 		}
 	}
+
+	public function CTable($tableName){
+		return $this->Perfect->CTable($tableName);
+	}
 }

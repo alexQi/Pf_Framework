@@ -68,6 +68,33 @@ class Perfect {
 		}
 	}
 
+	public function run(){
+		try{
+			if ($this->Router['moduleStatus']) {
+				$moduleName = CONTROLLER_PATH.$this->Router['module'].DS;
+				if (!is_dir($moduleName)) {
+					throw new Pf_Exception("Not found module , module name : <font color='#FE8D41'>$this->module</font>");
+				}
+			}
+			
+			$controllerName = $this->Router['controller'].'Controller';
+			$actionName = $this->Router['action'].'Action';
+
+			if (!$this->Router['controller'] || !class_exists($controllerName)) {
+				throw new Pf_Exception("Not found controller , controller name : <font color='#FE8D41'>$controllerName</font>");
+			}
+			$Controller = new $controllerName;
+			if (!method_exists($Controller, $actionName)){
+				throw new Pf_Exception("Not found this action in $controllerName , action name : <font color='#FE8D41'>$actionName</font>");
+			}
+			$Controller->$actionName();
+		}
+		catch(Pf_Exception $e)
+		{
+			$this->Pf_Exception->init($e);
+		}
+	}
+
 	private static function getClassFileDirs(){
 		return array(
 			'core'=>CORE_PATH,
@@ -182,31 +209,9 @@ class Perfect {
 		}
 	}
 
-	public function run(){
-		try{
-			if ($this->Router['moduleStatus']) {
-				$moduleName = CONTROLLER_PATH.$this->Router['module'].DS;
-				if (!is_dir($moduleName)) {
-					throw new Pf_Exception("Not found module , module name : <font color='#FE8D41'>$this->module</font>");
-				}
-			}
-			
-			$controllerName = $this->Router['controller'].'Controller';
-			$actionName = $this->Router['action'].'Action';
-
-			if (!$this->Router['controller'] || !class_exists($controllerName)) {
-				throw new Pf_Exception("Not found controller , controller name : <font color='#FE8D41'>$controllerName</font>");
-			}
-			$Controller = new $controllerName;
-			if (!method_exists($Controller, $actionName)){
-				throw new Pf_Exception("Not found this action in $controllerName , action name : <font color='#FE8D41'>$actionName</font>");
-			}
-			$Controller->$actionName();
-		}
-		catch(Pf_Exception $e)
-		{
-			$this->Pf_Exception->init($e);
-		}
+	public function CTable($fTableName){
+		$prefix = $this->config['database']['prefix'];
+		return $prefix.$fTableName;
 	}
 	
 }

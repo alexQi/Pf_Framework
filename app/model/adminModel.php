@@ -3,15 +3,13 @@ if (!defined('Perfect')) exit('Blocking access to this script');
 
 class adminModel extends Model {
 
-	const table = 'pf_admins';
-
 	public function getUserInfoByName($username){
-		$sql = "SELECT * FROM ".self::table." WHERE user_account='$username' LIMIT 1";
+		$sql = "SELECT * FROM `{$this->CTable('admins')}` WHERE user_account='$username' LIMIT 1";
 		return $this->Db->fetch($sql);
 	}
 
 	public function getMemberDetailById($admin_id){
-		$sql = "SELECT * FROM ".self::table." WHERE admin_id=$admin_id LIMIT 1";
+		$sql = "SELECT * FROM `{$this->CTable('admins')}` WHERE admin_id=$admin_id LIMIT 1";
 		return $this->Db->fetch($sql);
 	}
 
@@ -19,7 +17,7 @@ class adminModel extends Model {
 		try {
 			$this->Db->beginTransaction();
 
-			$sql = "UPDATE ".self::table."
+			$sql = "UPDATE `{$this->CTable('admins')}`
 				SET `login_count`=login_count+1,last_time='{$intoData["time"]}'
 				WHERE `admin_id` = {$intoData['admin_id']}
 				LIMIT 1 ";
@@ -46,12 +44,12 @@ class adminModel extends Model {
 	public function getMemberList($onPage=1,$pageSize=20,$filter) {
 		$offSet = $pageSize*($onPage-1);
 		$sql = "SELECT *
-			FROM ".self::table."
+			FROM `{$this->CTable('admins')}`
 			WHERE user_role>=0 $filter 
 			LIMIT $offSet,$pageSize ";
 
 		$sqls = "SELECT count(*) as count
-			 FROM ".self::table."
+			 FROM `{$this->CTable('admins')}`
 			 WHERE user_role>=0 $filter";
 
 		$countLine = $this->Db->fetch($sqls);
@@ -65,7 +63,7 @@ class adminModel extends Model {
 			$tmp[] ="`$key`='{$value}'";
 		}
 		$parme = join(',',$tmp);
-		$sql = "INSERT INTO ".self::table." SET $parme";
+		$sql = "INSERT INTO `{$this->CTable('admins')}` SET $parme";
 		unset($intoData,$parme,$tmp,$key,$value);
 		return $this->Db->query($sql);
 	}
@@ -79,7 +77,7 @@ class adminModel extends Model {
 			}
 		}
 		$parme = join(",",$tmp);
-		$sql = "UPDATE ".self::table."
+		$sql = "UPDATE `{$this->CTable('admins')}`
 			SET $parme
 			WHERE `admin_id` = {$intoData['admin_id']}
 			LIMIT 1 ";
@@ -110,13 +108,13 @@ class adminModel extends Model {
 	public function getOperationLogs($onPage=1,$pageSize=20,$filter) {
 		$offSet = $pageSize*($onPage-1);
 		$sql = "SELECT *
-			FROM pf_operation_log OL
-			LEFT JOIN ".self::table." AM ON OL.`admin_id`=AM.`admin_id`
+			FROM `{$this->CTable('operation_log')}` OL
+			LEFT JOIN `{$this->CTable('admins')}` AM ON OL.`admin_id`=AM.`admin_id`
 			WHERE $filter
 			LIMIT $offSet,$pageSize";
 		$sqls = "SELECT count(*) as count
-			 FROM pf_operation_log OL
-			 LEFT JOIN ".self::table." AM ON OL.`admin_id`=AM.`admin_id`
+			 FROM `{$this->CTable('operation_log')}` OL
+			 LEFT JOIN `{$this->CTable('admins')}` AM ON OL.`admin_id`=AM.`admin_id`
 			 WHERE $filter";
 		$countLine = $this->Db->fetch($sqls);
 		$allLine = $this->Db->fetchAll($sql);
@@ -125,17 +123,17 @@ class adminModel extends Model {
 	}
 
 	public function getLogModule(){
-		$sql = "SELECT `module` FROM pf_operation_log GROUP BY `module`";
+		$sql = "SELECT `module` FROM `{$this->CTable('operation_log')}` GROUP BY `module`";
 		return $this->Db->fetchAll($sql);
 	}
 
 	public function getLogTables($module){
-		$sql = "SELECT `table` FROM pf_operation_log WHERE `module`='$module' GROUP BY `table`";
+		$sql = "SELECT `table` FROM `{$this->CTable('operation_log')}` WHERE `module`='$module' GROUP BY `table`";
 		return $this->Db->fetchAll($sql);
 	}
 	
 	public function getLogTableType($table){
-		$sql = "SELECT type FROM pf_operation_log WHERE `table`='$table' GROUP BY type";
+		$sql = "SELECT type FROM `{$this->CTable('operation_log')}` WHERE `table`='$table' GROUP BY type";
 		return $this->Db->fetchAll($sql);
 	}
 
