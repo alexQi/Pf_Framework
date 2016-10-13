@@ -133,22 +133,26 @@ function checkChildSelect (focusObj,childrenName) {
 	<tr>
 		<td colspan="2" style="border-bottom:none">
 			<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mainTable" style="margin:auto;border:none">
-			<tr>
+			<tr style="height:30px;">
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">用户名：</td>
-				<td style="text-align:left;text-indent:5px"><input type="text" name="userName" id="userName" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
+				<td style="text-align:left;text-indent:5px"><input type="text" class="easyui-textbox" name="userName" id="userName" style="width:120px;text-align:center;height:25px;border:1px solid #000000"></td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">密码：</td>
-				<td style="text-align:left;text-indent:5px"><input type="text" name="passWord" id="passWord" style="width:100px;height:18px;line-height:18px;border:1px solid #000000"></td>
+				<td style="text-align:left;text-indent:5px"><input type="text" class="easyui-textbox" name="passWord" id="passWord" style="width:120px;height:25px;border:1px solid #000000"></td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">真实姓名：</td>
-				<td style="text-align:left;text-indent:5px"><input type="text" name="trueName" id="trueName" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
+				<td style="text-align:left;text-indent:5px"><input type="text" class="easyui-textbox" name="trueName" id="trueName" style="width:120px;text-align:center;height:25px;border:1px solid #000000"></td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">QQ：</td>
-				<td style="text-align:left;text-indent:5px"><input type="text" name="qqAccount" id="qqAccount" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
+				<td style="text-align:left;text-indent:5px"><input type="text" class="easyui-textbox" name="qqAccount" id="qqAccount" style="width:120px;text-align:center;height:25px;border:1px solid #000000"></td>
 			</tr>
-			<tr>
+			<tr style="height:30px;">
+				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">昵称：</td>
+				<td style="text-align:left;text-indent:5px">
+					<input type="text" class="easyui-textbox" name="nickName" id="nickName" style="width:120px;text-align:center;height:25px;border:1px solid #000000">
+				</td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">联系电话：</td>
-				<td style="text-align:left;text-indent:5px"><input type="text" name="privatePhone" id="privatePhone" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000"></td>
+				<td style="text-align:left;text-indent:5px"><input type="text" class="easyui-textbox" name="privatePhone" id="privatePhone" style="width:120px;text-align:center;height:25px;border:1px solid #000000"></td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">管理组：</td>
 				<td style="text-align:left;text-indent:5px">
-				<select id="userRole" name="userRole">
+				<select id="userRole" name="userRole" class="easyui-combobox" style="height:25px;width:120px;">
 				<option value=''>请选择用户部门</option>
 					<?php foreach ($userGroup as $key => $group): ?>
 					<option value="<?php echo $group['groupValue']; ?>"><?php echo $group['groupName']; ?></option>	
@@ -157,17 +161,14 @@ function checkChildSelect (focusObj,childrenName) {
 				</td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">角色：</td>
 				<td style="text-align:left;text-indent:5px">
-				<select id="userRoleType" name="userRoleType">
+				<select id="userRoleType" name="userRoleType" class="easyui-combobox" style="height:25px;width:120px;">
 					<option value=''>请选择用户角色</option>
 					<?php foreach ($roleTypeSelect as $key => $roleType): ?>
 					<option value="<?php echo $roleType['value']; ?>"><?php echo $roleType['title']; ?></option>
 					<?php endforeach ?>
 				</select>
 				</td>
-				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">昵称：</td>
-				<td style="text-align:left;text-indent:5px">
-					<input type="text" name="nickName" id="nickName" style="width:100px;text-align:center;height:18px;line-height:18px;border:1px solid #000000">
-				</td>
+				
 			</tr>
 			</table>
 		</td>

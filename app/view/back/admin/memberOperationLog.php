@@ -57,10 +57,10 @@ $(document).ready(function(){
 		<tr>
 			<td colspan="3" style="vertical-align:middle;border-right:none;height:40px">
 				<span title="请输入项目名称进行快速查询">
-					关键字：<input type="text" id="searchTag" name="searchTag" value="<?php echo $searchTag; ?>" style="width:170px;height:24px;" class="searchBox" />
+					关键字：<input type="text" class="easyui-textbox" id="searchTag" name="searchTag" value="<?php echo $searchTag; ?>" style="width:170px;height:24px;" class="searchBox" />
 				</span>
 				<span title="请选择模块" style="margin-left:20px">
-					<select name="module" id="module" style="height:24px;">
+					<select name="module" id="module" style="height:24px;-webkit-border-radius: 5px 5px 5px 5px;border-radius: 5px 5px 5px 5px;">
 						<option value="">全部模块</option>
 						<?php foreach ($modules as $v): ?>
 						<option value="<?php echo $v['module']; ?>" <?php echo $module==$v['module'] ? 'selected':''; ?>><?php echo $v['module']; ?></option>
@@ -68,11 +68,11 @@ $(document).ready(function(){
 					</select>
 				</span>
 				<span title="请选择模块" style="margin-left:20px">
-					<select name="table" id="table" style="height:24px;">
+					<select name="table" id="table" style="height:24px;-webkit-border-radius: 5px 5px 5px 5px;border-radius: 5px 5px 5px 5px;">
 					</select>
 				</span>
 				<span title="请选择模块" style="margin-left:20px">
-					<select name="type" id="type" style="height:24px;">
+					<select name="type" id="type" style="height:24px;-webkit-border-radius: 5px 5px 5px 5px;border-radius: 5px 5px 5px 5px;">
 					</select>
 				</span>
 				<span style="margin-left:10px"><a id="searchButton" style="vertical-align:middle;" class="easyui-linkbutton" icon="icon-search" href="javascript:void(0)">搜索</a></span>

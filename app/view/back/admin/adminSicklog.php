@@ -19,7 +19,7 @@ function quickSick () {
         <td colspan="4" style="padding-left:5px;border-right:none;height:30px">
             <span>请选择记录周期：</span>
             <span>
-                <select id="sickDate" name="sickDate" onchange="quickSick()">
+                <select id="sickDate" name="sickDate" onchange="quickSick()" style="height:24px;-webkit-border-radius: 5px 5px 5px 5px;border-radius: 5px 5px 5px 5px;">
                     <option value="0">请选择</option>
                     <?php foreach ($logDateBox as $key => $box): ?>
                         <option value="<?php echo $box['date']; ?>" <?php echo $box['tag']; ?>><?php echo $box['date']; ?></option>
@@ -31,7 +31,7 @@ function quickSick () {
         <td style="padding-right:5px;border-right:none;height:30px;text-align:right">
             <span>请选择查看方式：</span>
             <span>
-                <select id="sortType" name="sortType" onchange="quickSick()">
+                <select id="sortType" name="sortType" onchange="quickSick()" style="height:24px;-webkit-border-radius: 5px 5px 5px 5px;border-radius: 5px 5px 5px 5px;">
                     <option value="0">快速查看</option>
                     <?php foreach ($sortSelect as $key => $sort): ?>
                         <option value="<?php echo $sort['value']; ?>" <?php echo $sort['tag']; ?>><?php echo $sort['title']; ?></option>

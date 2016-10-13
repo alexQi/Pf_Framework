@@ -46,7 +46,7 @@ function sickManagerSystemLog(userName,token){
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="mainTable">
 	<tr>
 		<td colspan="10" style="padding-left:10px;border-right:none;height:40px">
-			<span>关键字：<input type="text" id="searchTag" name="searchTag" value="<?php echo $searchTag; ?>" style="width:180px;height:24px;" class="searchBox" /></span>
+			<span>关键字：<input type="text" class="easyui-textbox" id="searchTag" name="searchTag" value="<?php echo $searchTag; ?>" style="width:180px;height:24px;" class="searchBox" /></span>
 			<span style="margin-left:10px"><a id="searchButton" class="easyui-linkbutton" icon="icon-search" href="javascript:void(0)">搜索</a></span>
 			<span style="margin-left:10px"><a id="createManagerButton" class="easyui-linkbutton" icon="icon-add" href="javascript:void(0)">创建</a></span>
 		</td>
