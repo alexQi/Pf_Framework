@@ -152,7 +152,7 @@ function checkChildSelect (focusObj,childrenName) {
 				<td style="text-align:left;text-indent:5px"><input type="text" class="easyui-textbox" name="privatePhone" id="privatePhone" style="width:120px;text-align:center;height:25px;border:1px solid #000000"></td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">管理组：</td>
 				<td style="text-align:left;text-indent:5px">
-				<select id="userRole" name="userRole" class="easyui-combobox" style="height:25px;width:120px;">
+				<select name="userRole" class="easyui-combobox" style="height:25px;width:120px;">
 				<option value=''>请选择用户部门</option>
 					<?php foreach ($userGroup as $key => $group): ?>
 					<option value="<?php echo $group['groupValue']; ?>"><?php echo $group['groupName']; ?></option>	
@@ -161,7 +161,7 @@ function checkChildSelect (focusObj,childrenName) {
 				</td>
 				<td class="tableHeadTitle" style="width:110px;text-align:right;height:24px">角色：</td>
 				<td style="text-align:left;text-indent:5px">
-				<select id="userRoleType" name="userRoleType" class="easyui-combobox" style="height:25px;width:120px;">
+				<select name="userRoleType" class="easyui-combobox" style="height:25px;width:120px;">
 					<option value=''>请选择用户角色</option>
 					<?php foreach ($roleTypeSelect as $key => $roleType): ?>
 					<option value="<?php echo $roleType['value']; ?>"><?php echo $roleType['title']; ?></option>
