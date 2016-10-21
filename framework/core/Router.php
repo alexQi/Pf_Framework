@@ -11,6 +11,7 @@ class Router{
 	public function __construct($router){
 		$this->default_config = $router;
 		$this->getParams();
+		$this->filterParam();
 	}
 
 	public function getParams(){
@@ -77,6 +78,17 @@ class Router{
 			}
 		}
 		return $action;
+	}
+
+	/**
+	 * 防止SQL注入 过滤参数
+	 */
+	public function filterParam(){
+		if(!empty($_REQUEST)){
+			foreach ($_REQUEST as $key => $value) {
+				$_REQUEST[$key] = str_replace("'","\'",$value);
+			}
+		}
 	}
 }
 
