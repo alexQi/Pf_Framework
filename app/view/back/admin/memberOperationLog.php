@@ -15,16 +15,16 @@ $(document).ready(function(){
 		{module:module},
 		function(data){
 			$('#table').html(data);
-			$("#table option[value='{%$table%}']").attr("selected",true);
+			$("#table option[value='<?php echo $table; ?>']").attr("selected",true);
 		}
 	);
-	var table = '{%$table%}';
+	var table = '<?php echo $table; ?>';
 	$.post(
 		'index.php?r=back/admin/getLogTypeNoAuth',
 		{table:table},
 		function(data){
 			$('#type').html(data);
-			$("#type option[value='{%$type%}']").attr("selected",true);
+			$("#type option[value='<?php echo $type; ?>']").attr("selected",true);
 		}
 	);
 
