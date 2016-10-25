@@ -8,8 +8,10 @@ $(document).ready(function(){
 	tabCloseEven();
 
 	$('.easyui-accordion li a').click(function(){
-		var tabTitle = $(this).text();
+		var tabTitle = $(this).children('.Tsub').text();
 		var url = $(this).attr("href");
+		console.log(tabTitle);
+		console.log($('#tabs').tabs('exists',tabTitle));
 		addTab(tabTitle,url);
 		$('.easyui-accordion li div').removeClass("selected");
 		$(this).parent().addClass("selected");
@@ -28,7 +30,7 @@ function InitLeftMenu() {
 	$.each(_menus.menus, function(i, n) {
 		menulist = '<ul>';
 		$.each(n.menus, function(j, o) {
-			menulist += '<li><div><a target="mainFrame" href="' + o.url + '" ><span class="icon '+o.icon+'" >&nbsp;</span>' + o.menuname + '</a></div></li> ';
+			menulist += '<li><div><a target="mainFrame" href="' + o.url + '" ><span class="icon '+o.icon+'" >&nbsp;</span><span class="Tsub">' + o.menuname + '</span></a></div></li> ';
 		})
 		menulist += '</ul>';
 		var is_select = false;
@@ -194,8 +196,8 @@ $(function() {
 
 	})
 	$('#tabs').tabs('add',{
-		title:'this is an perfect world',
-		content:''
+		title:'WELCOME',
+		content:createFrame('index.php?r=back/main/welcome'),
 	}).tabs({
 		onSelect: function (title) {
 			var currTab = $('#tabs').tabs('getTab', title);

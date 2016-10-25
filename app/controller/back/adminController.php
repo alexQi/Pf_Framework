@@ -242,10 +242,6 @@ class adminController extends baseController
 			$userTouch = join('|',$intoUusertouchTemp);
 			if($_SESSION[Perfect]['root']==false){
 				if($_SESSION[Perfect]['userRole']==1 && $_SESSION[Perfect]['roleType']==1000) {
-					// if($intoData['user_role']==0 || $intoData['role_type']==0){
-					// 	$this->Alert('1非法操作!');
-					// 	exit;
-					// }
 					$intoData['user_touch'] = $userTouch;
 				}else{
 					$this->Alert('非法操作!');
@@ -319,11 +315,12 @@ class adminController extends baseController
 		$offSet = $pageSize*($onPage-1);
 		if($_SESSION[Perfect]['root']==false){
 			if($userName!=$_SESSION[Perfect]['userAccount']){
-				exit('11非法操作！');
+				exit('非法操作！');
 			}
 		}
 		$logDir = LOG_PATH.DS.$userName.DS;
 		$sickDate = empty($_REQUEST['sickDate'])?date("Y-m"):$_REQUEST['sickDate'];
+		$logDateBox = array();
 		foreach (glob($logDir."*.log") as $logFile) {
 			$date = substr(substr($logFile,-11),0,7);
 			$selected = ($sickDate==$date)?"selected":'';

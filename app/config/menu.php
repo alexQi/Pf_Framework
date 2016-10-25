@@ -19,7 +19,7 @@ $system_menu['MENU'] = array(
  */
 $system_menu['ITEM'] = array(
 	'11'=>array('F'=>'01','T'=>'用户中心','M'=>'main','A'=>'index'),
-	'12'=>array('F'=>'01','T'=>'欢迎登录','M'=>'main','A'=>'welcome'),
+	'12'=>array('F'=>'01','T'=>'WELCOME','M'=>'main','A'=>'welcome'),
 
 	'101'=>array('F'=>'100','T'=>'用户列表','M'=>'admin','A'=>'index','DTYPE'=>1010),
 	'102'=>array('F'=>'100','T'=>'操作日志','M'=>'admin','A'=>'operationLogList'),

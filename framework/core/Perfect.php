@@ -1,6 +1,5 @@
 <?php
 if (!defined('Perfect')) exit('Blocking access to this script');
-include('Main.config.php');
 /**
  * core class
  * author : alex
@@ -24,6 +23,7 @@ class Perfect {
 		session_start();
 		
 		//载入文件
+		include('Main.config.php');
 		include(CORE_PATH.'Router.php');
 		include(CORE_PATH.'Pf_Exception.php');
 		include(DRIVER_PATH.'Mysql.php');
