@@ -10,8 +10,6 @@ $(document).ready(function(){
 	$('.easyui-accordion li a').click(function(){
 		var tabTitle = $(this).children('.Tsub').text();
 		var url = $(this).attr("href");
-		console.log(tabTitle);
-		console.log($('#tabs').tabs('exists',tabTitle));
 		addTab(tabTitle,url);
 		$('.easyui-accordion li div').removeClass("selected");
 		$(this).parent().addClass("selected");

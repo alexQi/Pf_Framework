@@ -13,6 +13,8 @@ class mainController extends baseController {
 		$expMenu = array();
 		$menuIcoBox = array(
 			'01'=>'icon-users',
+			'02'=>'icon-nav',
+			'03'=>'icon-role',
 			'100'=>'icon-set',
 		);
 		if($_SESSION[Perfect]['root']===false || is_null($_SESSION[Perfect]['root'])){

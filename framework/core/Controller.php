@@ -85,6 +85,20 @@ abstract class Controller {
 		file_put_contents($logFile,$logLine, FILE_APPEND|LOCK_EX);
 	}
 
+	public 	function connectHandledRedis(){
+		$config=$this->Perfect->config['handledRedis'];
+		$handleRedis = new Redis();
+		if(!$handleRedis->connect($config['host'], $config['port'])){
+			echo "redis not connect!";
+			exit;
+		}
+		if(!$handleRedis->auth($config['passwd'])){
+			echo "redis auth error!";
+			exit;
+		}
+		return $handleRedis;
+	}
+
 	public function Alert($msg=null, $goto = null){
 		$msg = str_replace('|','<br>',$msg);
 		$path = $this->Perfect->config['viewConfig']['viewPath'].'/public/';

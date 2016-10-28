@@ -2,13 +2,19 @@
 if (!defined('Perfect')) exit('Blocking access to this script');
 
 $CONFIG['database'] = array(
-	'host'=>'localhost',
+	'host'=>'122.225.96.74',
 	'port'=>'3306',
-	'username'=>'root',
-	'password'=>'woshishei',
+	'username'=>'ffwapkkobA',
+	'password'=>'ffwapokokookb....',
 	'charset'=>'utf8',
-	'db'=>'ffwap',
+	'db'=>'test',
 	'prefix'=>'pf_',
+);
+
+$CONFIG['handledRedis'] = array(
+        'host'=>'122.225.96.81',
+        'port'=>6379,
+        'passwd' =>'FFWAP_ANALYSIS_SERVER_SET_BY_YITE',
 );
 
 $CONFIG['router'] = array(
@@ -28,14 +34,17 @@ $CONFIG['viewConfig'] = array(
 	'layout'=>'main',
 );
 
-$CONFIG['systemGroup'] = array (
+$CONFIG['systemGroup'] = array(
 	'1' => '技术部',
-	'2' => '市场部',
+	'2' => '人事部',
 	'3' => '财务部',
-	'4' => '人事部',
+	'4' => '市场部',
+	'5' => '媒介部',
+	
+	
 );
 
-$CONFIG['systemUserRole'] = array (
+$CONFIG['systemUserRole'] = array(
 	'0' => '[总经理]',
 	'1' => '[经理]',
 	'2' => '[主管]',
@@ -43,11 +52,24 @@ $CONFIG['systemUserRole'] = array (
 	'1000'=>'[系统管理员]'
 );
 
-$CONFIG['systemAccountStatus'] = array (
+$CONFIG['systemAccountStatus'] = array(
 	'0' => '正常',
 	'1' => '锁定'
 );
 
+$CONFIG['advertStatus'] = array(
+	'1' => '待审',
+	'2' => '正常',
+	'3' => '暂停',
+	'4' => '拒绝',
+);
+
+$CONFIG['countPoint'] = array(
+	'1' => '横幅',
+	'2' => '内嵌',
+	'3' => '跳转',
+	'4' => '插屏',
+);
 
 $CONFIG['province'] = array(
 	'1'  => '北京',

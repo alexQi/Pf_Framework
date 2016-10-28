@@ -1,7 +1,7 @@
 <?php
 if (!defined('Perfect')) exit('Blocking access to this script');
 
-class adminModel extends Model {
+class AdvertModel extends Model {
 
 	public function getUserInfoByName($username){
 		$sql = "SELECT * FROM `{$this->CTable('admins')}` WHERE user_account='$username' LIMIT 1";
@@ -13,51 +13,23 @@ class adminModel extends Model {
 		return $this->Db->fetch($sql);
 	}
 
-	public function setLoginRecord($intoData) {
-		try {
-			$this->Db->beginTransaction();
-
-			$sql = "UPDATE `{$this->CTable('admins')}`
-				SET `login_count`=login_count+1,last_time='{$intoData["time"]}'
-				WHERE `admin_id` = {$intoData['admin_id']}
-				LIMIT 1 ";
-			$rs = $this->Db->exec($sql);
-			$parme = '';
-			$tmp = array();
-			foreach($intoData as $key => $value){
-				$tmp[] = "`".$key."`='".$value."'";
-			}
-			$parme = join(",",$tmp);
-			$sqls = "INSERT INTO pf_admin_login_log SET $parme ";
-			$rss = $this->Db->query($sqls);
-			if(!$rs && $rss){
-				throw new Pf_Exception("数据库日志记录失败");
-			}
-			$this->Db->commit();
-			return true;
-		} catch (Pf_Exception $e) {
-			$this->Db->rollBack();
-			return false;
-		}
-	}
-
-	public function getMemberRows($filter){
-		$sql = "SELECT *
-			FROM `{$this->CTable('admins')}`
-			WHERE $filter ";
-		return $this->Db->fetchAll($sql);
-	}
-
-	public function getMemberList($onPage=1,$pageSize=20,$filter) {
+	public function getAdvertList($onPage=1,$pageSize=20,$filter) {
 		$offSet = $pageSize*($onPage-1);
-		$sql = "SELECT *
-			FROM `{$this->CTable('admins')}`
-			WHERE user_role>=0 $filter 
-			LIMIT $offSet,$pageSize ";
-
+		$sql = "SELECT AD.`advert_id`,AD.`advert_master_id`,ADT.`user_name`,AD.`shift_id`,AD.`advert_name`,ADT.`admin_id`,AD.`advert_type`,AD.`platform`,AD.`charge_point`,AD.`advert_price`,AD.`intraday_amount`,AD.`total_amount`,AD.`is_arrived`,AD.`status`,ADM.`true_name`,`ADDR`.`hours`,ADMTL.*
+			FROM `{$this->CTable('advert')}` AS AD
+			LEFT JOIN `{$this->CTable('advert_master')}` AS ADT ON `AD`.`advert_master_id`=`ADT`.`advert_master_id`
+			LEFT JOIN `{$this->CTable('admins')}` AS ADM ON `ADT`.`admin_id`=`ADM`.`admin_id`
+			LEFT JOIN `{$this->CTable('advert_direct')}` AS ADDR ON `ADDR`.`advert_id`=`AD`.`advert_id`
+			LEFT JOIN `{$this->CTable('advert_material')}` AS ADMTL ON `ADMTL`.`advert_id`=`AD`.`advert_id`
+			WHERE $filter 
+			LIMIT $offSet,$pageSize";
 		$sqls = "SELECT count(*) as count
-			 FROM `{$this->CTable('admins')}`
-			 WHERE user_role>=0 $filter";
+			FROM `{$this->CTable('advert')}` AS AD
+			LEFT JOIN `{$this->CTable('advert_master')}` AS ADT ON `AD`.`advert_master_id`=`ADT`.`advert_master_id`
+			LEFT JOIN `{$this->CTable('admins')}` AS ADM ON `ADT`.`admin_id`=`ADM`.`admin_id`
+			LEFT JOIN `{$this->CTable('advert_direct')}` AS ADDR ON `ADDR`.`advert_id`=`AD`.`advert_id`
+			LEFT JOIN `{$this->CTable('advert_material')}` AS ADMTL ON `ADMTL`.`advert_id`=`AD`.`advert_id`
+			WHERE $filter";
 
 		$countLine = $this->Db->fetch($sqls);
 		$allLine = $this->Db->fetchAll($sql);
@@ -115,12 +87,12 @@ class adminModel extends Model {
 	public function getOperationLogs($onPage=1,$pageSize=20,$filter) {
 		$offSet = $pageSize*($onPage-1);
 		$sql = "SELECT *
-			FROM `{$this->CTable('admin_operation_log')}` OL
+			FROM `{$this->CTable('operation_log')}` OL
 			LEFT JOIN `{$this->CTable('admins')}` AM ON OL.`admin_id`=AM.`admin_id`
 			WHERE $filter
 			LIMIT $offSet,$pageSize";
 		$sqls = "SELECT count(*) as count
-			 FROM `{$this->CTable('admin_operation_log')}` OL
+			 FROM `{$this->CTable('operation_log')}` OL
 			 LEFT JOIN `{$this->CTable('admins')}` AM ON OL.`admin_id`=AM.`admin_id`
 			 WHERE $filter";
 		$countLine = $this->Db->fetch($sqls);
@@ -130,17 +102,17 @@ class adminModel extends Model {
 	}
 
 	public function getLogModule(){
-		$sql = "SELECT `module` FROM `{$this->CTable('admin_operation_log')}` GROUP BY `module`";
+		$sql = "SELECT `module` FROM `{$this->CTable('operation_log')}` GROUP BY `module`";
 		return $this->Db->fetchAll($sql);
 	}
 
 	public function getLogTables($module){
-		$sql = "SELECT `table` FROM `{$this->CTable('admin_operation_log')}` WHERE `module`='$module' GROUP BY `table`";
+		$sql = "SELECT `table` FROM `{$this->CTable('operation_log')}` WHERE `module`='$module' GROUP BY `table`";
 		return $this->Db->fetchAll($sql);
 	}
 	
 	public function getLogTableType($table){
-		$sql = "SELECT type FROM `{$this->CTable('admin_operation_log')}` WHERE `table`='$table' GROUP BY type";
+		$sql = "SELECT type FROM `{$this->CTable('operation_log')}` WHERE `table`='$table' GROUP BY type";
 		return $this->Db->fetchAll($sql);
 	}
 

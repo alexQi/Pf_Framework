@@ -41,13 +41,6 @@ class adminModel extends Model {
 		}
 	}
 
-	public function getMemberRows($filter){
-		$sql = "SELECT *
-			FROM `{$this->CTable('admins')}`
-			WHERE $filter ";
-		return $this->Db->fetchAll($sql);
-	}
-
 	public function getMemberList($onPage=1,$pageSize=20,$filter) {
 		$offSet = $pageSize*($onPage-1);
 		$sql = "SELECT *
@@ -115,12 +108,12 @@ class adminModel extends Model {
 	public function getOperationLogs($onPage=1,$pageSize=20,$filter) {
 		$offSet = $pageSize*($onPage-1);
 		$sql = "SELECT *
-			FROM `{$this->CTable('admin_operation_log')}` OL
+			FROM `{$this->CTable('operation_log')}` OL
 			LEFT JOIN `{$this->CTable('admins')}` AM ON OL.`admin_id`=AM.`admin_id`
 			WHERE $filter
 			LIMIT $offSet,$pageSize";
 		$sqls = "SELECT count(*) as count
-			 FROM `{$this->CTable('admin_operation_log')}` OL
+			 FROM `{$this->CTable('operation_log')}` OL
 			 LEFT JOIN `{$this->CTable('admins')}` AM ON OL.`admin_id`=AM.`admin_id`
 			 WHERE $filter";
 		$countLine = $this->Db->fetch($sqls);
@@ -130,17 +123,17 @@ class adminModel extends Model {
 	}
 
 	public function getLogModule(){
-		$sql = "SELECT `module` FROM `{$this->CTable('admin_operation_log')}` GROUP BY `module`";
+		$sql = "SELECT `module` FROM `{$this->CTable('operation_log')}` GROUP BY `module`";
 		return $this->Db->fetchAll($sql);
 	}
 
 	public function getLogTables($module){
-		$sql = "SELECT `table` FROM `{$this->CTable('admin_operation_log')}` WHERE `module`='$module' GROUP BY `table`";
+		$sql = "SELECT `table` FROM `{$this->CTable('operation_log')}` WHERE `module`='$module' GROUP BY `table`";
 		return $this->Db->fetchAll($sql);
 	}
 	
 	public function getLogTableType($table){
-		$sql = "SELECT type FROM `{$this->CTable('admin_operation_log')}` WHERE `table`='$table' GROUP BY type";
+		$sql = "SELECT type FROM `{$this->CTable('operation_log')}` WHERE `table`='$table' GROUP BY type";
 		return $this->Db->fetchAll($sql);
 	}
 
