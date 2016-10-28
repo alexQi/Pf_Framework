@@ -295,7 +295,7 @@ function setFocusColor(obj){
 			<table  cellpadding="0" cellspacing="0"  style="margin:0;width:100%;height:100%;border:0;" class="mainTable">
 				<tr>
 					<td style="padding-left:10px;">
-						广告地址：<a href="<?php echo $advertInfo['direct_url']; ?>"><?php echo substr($advertInfo['direct_url'],8); ?></a>
+						广告地址：<a href="<?php echo $advertInfo['direct_url']; ?>" target='_blank'><?php echo substr($advertInfo['direct_url'],8); ?></a>
 					</td>
 				</tr>
 				<tr>
